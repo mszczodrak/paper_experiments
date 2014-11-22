@@ -1,0 +1,18 @@
+uint8_t radio_tx_power = 0x08   #
+uint8_t radio_channel = 0       #
+uint16_t test_delay = 5000      # in ms - how often a test packet is sent
+float rssi_scale = 3.1
+int8_t rssi_offset = -98
+int8_t threshold1 = -80         # turn on 2nd LED (yellow)
+int8_t threshold2 = -50         # turn on 3rd LED (blue)
+
+process rssi_test { rssi(test_delay, rssi_scale, rssi_offset, threshold1, threshold2)
+        nullNet()
+        rf212(radio_channel, radio_tx_power, 0)
+        # channel, power, sleepInterval
+}
+
+state test { rssi_test }
+
+start test
+

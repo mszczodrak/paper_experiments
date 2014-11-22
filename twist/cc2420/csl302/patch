@@ -1,0 +1,38 @@
+diff --git a/src/net/ctp/CtpForwardingEngineP.nc b/src/net/ctp/CtpForwardingEngineP.nc
+index 6baa0a4..79b1b65 100644
+--- a/src/net/ctp/CtpForwardingEngineP.nc
++++ b/src/net/ctp/CtpForwardingEngineP.nc
+@@ -226,9 +226,9 @@ implementation {
+   }
+ 
+   command error_t StdControl.stop() {
+-    forwardingState = 0;
++    //forwardingState = 0;
+     call RetxmitTimer.stop();
+-    clearState(ROUTING_ON);
++    //clearState(ROUTING_ON);
+     return SUCCESS;
+   }
+ 
+diff --git a/src/net/ctp/CtpRoutingEngineP.nc b/src/net/ctp/CtpRoutingEngineP.nc
+index 92eaaa5..41eb229 100644
+--- a/src/net/ctp/CtpRoutingEngineP.nc
++++ b/src/net/ctp/CtpRoutingEngineP.nc
+@@ -230,6 +230,7 @@ task void routeUpdate() {
+         state_is_root = 0;
+         routeInfoInit(&routeInfo);
+         routingTableInit();
++       currentInterval = minInterval;
+         beaconMsg = call BeaconSend.getPayload(&beaconMsgBuffer, call BeaconSend.maxPayloadLength());
+         dbg("TreeRoutingCtl","TreeRouting initialized. (used payload:%d max payload:%d!\n", 
+               sizeof(beaconMsg), call BeaconSend.maxPayloadLength());
+@@ -241,7 +242,7 @@ task void routeUpdate() {
+       //start will (re)start the sending of messages
+       if (!running) {
+        running = TRUE;
+-       resetInterval();
++       chooseAdvertiseTime();
+        call RouteTimer.startPeriodic(BEACON_INTERVAL);
+        dbg("TreeRoutingCtl","%s running: %d radioOn: %d\n", __FUNCTION__, running, radioOn);
+       }     
+

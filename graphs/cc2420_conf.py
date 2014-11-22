@@ -1,0 +1,1 @@
+../indriya/data/cc2420_conf.py

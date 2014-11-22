@@ -1,0 +1,8 @@
+*.pyc
+*.png
+*.eps
+*.pdf
+*.jpg
+*.svg
+digraph_I*
+graph_I*

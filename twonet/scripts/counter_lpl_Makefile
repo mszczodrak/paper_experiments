@@ -1,0 +1,42 @@
+# Makefile to open twonet log and send to
+# Fennec to process SerialDbgs messages
+#
+# Author: Marcin K Szczodrak
+# Updated: 4/24/2014
+
+COMBINED_LOG=log.dat
+COMBINE_SCRIPT=../../../scripts/combine_twonet_logs.py
+THIS_DIR=`pwd`
+LOG_RESULT=result.txt
+SUB_DIR=result
+SCRIPT1=../../../../scripts/counter_test_stats.py
+SCRIPT1_DATA=counter.json
+SCRIPT2=../../../../scripts/duty_cycle.py
+SCRIPT2_DATA=duty_cycle.json
+SCRIPT3=../../../../scripts/ctp_routing_stats.py
+SCRIPT3_DATA=ctp_routing.json
+
+all: $(LOG_RESULT) $(SCRIPT1_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA)
+
+$(LOG_RESULT): *.tgz
+	tar -xf *.tgz
+	$(COMBINE_SCRIPT) $(THIS_DIR)/$(SUB_DIR) $(THIS_DIR)/$(COMBINED_LOG)
+	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_twonet.py *.dat > $(LOG_RESULT)
+
+$(SCRIPT1_DATA): $(LOG_RESULT)
+	$(SCRIPT1) $(LOG_RESULT) $(SCRIPT1_DATA)
+
+$(SCRIPT2_DATA): $(LOG_RESULT)
+	$(SCRIPT2) $(LOG_RESULT) $(SCRIPT2_DATA)
+
+$(SCRIPT3_DATA): $(LOG_RESULT)
+	$(SCRIPT3) $(LOG_RESULT) $(SCRIPT3_DATA)
+
+clean:
+	if [ -f $(COMBINED_LOG) ]; then rm $(COMBINED_LOG); fi
+	if [ -d $(SUB_DIR) ]; then rm -rf $(SUB_DIR); fi
+	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
+	if [ -f $(SCRIPT1_DATA) ]; then rm $(SCRIPT1_DATA); fi
+	if [ -f $(SCRIPT2_DATA) ]; then rm $(SCRIPT2_DATA); fi
+	if [ -f $(SCRIPT3_DATA) ]; then rm $(SCRIPT3_DATA); fi
+

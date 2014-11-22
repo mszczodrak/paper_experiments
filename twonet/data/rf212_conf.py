@@ -1,0 +1,17 @@
+
+data_directory = "/home/msz/github/experiments/twonet/0.9/rf212"
+
+radio_tx_powers_confs = ["0xE8", "0xE9", "0xEA", "0xEB", "0xAB", "0xAC",
+		"0xAD", "0x48", "0x28", "0x29", "0x2A", "0x08", "0x09",
+		"0x0A", "0x0B", "0x0C", "0x0D"]
+
+radio_tx_powers_sorted = ["5", "4", "3", "2", "1", "0", "-1", "-2", "-3", "-4",
+		"-5", "-6", "-7", "-8", "-9", "-10", "-11"]
+
+radio_power_levels = {"0xE8":5, "0xE9":4, "0xEA":3, "0xEB":2, "0xAB":1, "0xAC":0,
+               "0xAD":-1, "0x48":-2, "0x28":-3, "0x29":-4, "0x2A":-5, 
+               "0x08":-6, "0x09":-7, "0x0A":-8, "0x0B":-9, "0x0C":-10,
+               "0x0D":-11 }
+
+radio_rssi_scale = 3.1
+radio_rssi_offset = -98
