@@ -1,0 +1,126 @@
+../../scripts/sdf_stats.py result.txt sdf.json ../../data/indriya_conf.py
+0 (101)  0.293 - 0.000 = 0.293
+1 (101)  1801.463 - 1800.696 = 0.767
+2 (101)  3601.487 - 3601.393 = 0.094
+3 (101)  5402.187 - 5402.091 = 0.096
+4 (101)  7202.902 - 7202.788 = 0.114
+5 (101)  9003.578 - 9003.485 = 0.093
+6 (101)  10804.275 - 10804.178 = 0.097
+7 (101)  12604.982 - 12604.877 = 0.105
+
+Estimate Dissemination End Time Final Results 
+Average 0.2074
+Median  0.1050
+Max     0.7670
+
+../../../scripts/duty_cycle_v2.py result.txt duty_cycle.json ../../data/indriya_conf.py 11
+Node 1:  Time On 0.059   Mean: 34.739   Std: 133.729
+Node 2:  Time On 0.058   Mean: 34.044   Std: 131.630
+Node 3:  Time On 0.058   Mean: 34.088   Std: 132.352
+Node 4:  Time On 0.064   Mean: 37.699   Std: 133.811
+Node 5:  Time On 0.059   Mean: 35.031   Std: 132.928
+Node 6:  Time On 0.059   Mean: 35.044   Std: 138.013
+Node 8:  Time On 0.059   Mean: 34.792   Std: 131.743
+Node 9:  Time On 0.067   Mean: 39.456   Std: 130.970
+Node 10:  Time On 0.058   Mean: 34.217   Std: 132.514
+Node 12:  Time On 0.057   Mean: 33.907   Std: 131.352
+Node 13:  Time On 0.058   Mean: 34.513   Std: 129.847
+Node 14:  Time On 0.057   Mean: 33.518   Std: 128.439
+Node 15:  Time On 0.057   Mean: 33.881   Std: 130.882
+Node 16:  Time On 0.058   Mean: 34.071   Std: 131.571
+Node 17:  Time On 0.057   Mean: 33.788   Std: 130.042
+Node 18:  Time On 0.057   Mean: 33.894   Std: 131.610
+Node 19:  Time On 0.163   Mean: 96.195   Std: 124.902
+Node 20:  Time On 0.060   Mean: 35.389   Std: 138.764
+Node 21:  Time On 0.058   Mean: 34.119   Std: 132.448
+Node 22:  Time On 0.058   Mean: 34.558   Std: 130.182
+Node 24:  Time On 0.060   Mean: 35.385   Std: 130.072
+Node 25:  Time On 0.058   Mean: 34.518   Std: 130.461
+Node 26:  Time On 0.057   Mean: 33.770   Std: 130.165
+Node 27:  Time On 0.058   Mean: 34.367   Std: 131.039
+Node 28:  Time On 0.060   Mean: 35.677   Std: 136.314
+Node 30:  Time On 0.057   Mean: 33.903   Std: 130.593
+Node 31:  Time On 0.060   Mean: 35.668   Std: 132.591
+Node 32:  Time On 0.059   Mean: 35.071   Std: 130.180
+Node 33:  Time On 0.062   Mean: 36.398   Std: 129.906
+Node 34:  Time On 0.058   Mean: 34.230   Std: 130.649
+Node 35:  Time On 0.065   Mean: 38.584   Std: 132.206
+Node 36:  Time On 0.062   Mean: 36.438   Std: 131.717
+Node 37:  Time On 0.066   Mean: 39.190   Std: 137.886
+Node 38:  Time On 0.059   Mean: 34.668   Std: 133.392
+Node 39:  Time On 0.059   Mean: 34.642   Std: 135.468
+Node 40:  Time On 0.062   Mean: 36.412   Std: 138.171
+Node 41:  Time On 0.059   Mean: 34.805   Std: 132.592
+Node 42:  Time On 0.059   Mean: 34.668   Std: 132.597
+Node 43:  Time On 0.059   Mean: 35.164   Std: 130.676
+Node 44:  Time On 0.058   Mean: 34.243   Std: 130.613
+Node 45:  Time On 0.060   Mean: 35.465   Std: 131.610
+Node 46:  Time On 0.058   Mean: 34.385   Std: 128.163
+Node 47:  Time On 0.058   Mean: 34.283   Std: 132.468
+Node 48:  Time On 0.059   Mean: 34.934   Std: 134.518
+Node 50:  Time On 0.056   Mean: 33.265   Std: 126.602
+Node 51:  Time On 0.062   Mean: 36.478   Std: 140.365
+Node 52:  Time On 0.059   Mean: 34.929   Std: 130.447
+Node 53:  Time On 0.065   Mean: 38.575   Std: 132.039
+Node 54:  Time On 0.058   Mean: 34.385   Std: 133.639
+Node 55:  Time On 0.065   Mean: 38.624   Std: 131.802
+Node 56:  Time On 0.058   Mean: 34.575   Std: 131.547
+Node 57:  Time On 0.059   Mean: 34.783   Std: 129.218
+Node 58:  Time On 0.072   Mean: 42.801   Std: 132.587
+Node 59:  Time On 0.117   Mean: 69.473   Std: 133.061
+Node 63:  Time On 0.059   Mean: 34.832   Std: 133.030
+Node 64:  Time On 0.057   Mean: 33.854   Std: 130.523
+Node 65:  Time On 0.057   Mean: 33.664   Std: 129.117
+Node 66:  Time On 0.059   Mean: 34.969   Std: 131.321
+Node 67:  Time On 0.058   Mean: 34.212   Std: 131.719
+Node 68:  Time On 0.105   Mean: 61.827   Std: 132.208
+Node 69:  Time On 0.057   Mean: 33.898   Std: 130.419
+Node 70:  Time On 0.078   Mean: 46.292   Std: 133.260
+Node 71:  Time On 0.058   Mean: 34.155   Std: 131.534
+Node 72:  Time On 0.062   Mean: 36.814   Std: 132.770
+Node 73:  Time On 0.059   Mean: 35.119   Std: 138.642
+Node 74:  Time On 0.059   Mean: 35.173   Std: 136.985
+Node 75:  Time On 0.062   Mean: 36.673   Std: 129.221
+Node 76:  Time On 0.059   Mean: 35.173   Std: 137.172
+Node 77:  Time On 0.059   Mean: 34.965   Std: 131.627
+Node 78:  Time On 0.058   Mean: 34.119   Std: 131.435
+Node 79:  Time On 0.057   Mean: 33.969   Std: 131.419
+Node 80:  Time On 0.061   Mean: 35.925   Std: 132.398
+Node 81:  Time On 0.124   Mean: 73.181   Std: 131.367
+Node 82:  Time On 0.062   Mean: 36.491   Std: 131.047
+Node 83:  Time On 0.058   Mean: 34.075   Std: 132.052
+Node 84:  Time On 0.058   Mean: 34.190   Std: 132.040
+Node 85:  Time On 0.061   Mean: 36.173   Std: 130.276
+Node 115:  Time On 0.058   Mean: 34.447   Std: 128.877
+Node 116:  Time On 0.059   Mean: 34.894   Std: 133.460
+Node 117:  Time On 0.059   Mean: 34.650   Std: 132.073
+Node 118:  Time On 0.058   Mean: 34.354   Std: 132.865
+Node 119:  Time On 0.078   Mean: 46.164   Std: 138.160
+Node 120:  Time On 0.059   Mean: 34.858   Std: 130.952
+Node 121:  Time On 0.059   Mean: 34.978   Std: 131.646
+Node 122:  Time On 0.060   Mean: 35.615   Std: 137.523
+Node 123:  Time On 0.058   Mean: 34.035   Std: 129.130
+Node 124:  Time On 0.062   Mean: 36.562   Std: 138.336
+Node 126:  Time On 0.061   Mean: 35.885   Std: 132.295
+Node 127:  Time On 0.062   Mean: 36.779   Std: 132.131
+Node 128:  Time On 0.061   Mean: 35.934   Std: 129.602
+Node 129:  Time On 0.061   Mean: 36.049   Std: 132.726
+Node 130:  Time On 0.060   Mean: 35.389   Std: 139.055
+Node 131:  Time On 0.062   Mean: 36.752   Std: 140.587
+Node 132:  Time On 0.063   Mean: 37.549   Std: 130.984
+Node 133:  Time On 0.063   Mean: 37.066   Std: 131.798
+Node 134:  Time On 0.060   Mean: 35.487   Std: 132.492
+Node 135:  Time On 0.062   Mean: 36.469   Std: 132.241
+Node 137:  Time On 0.060   Mean: 35.482   Std: 132.830
+Node 138:  Time On 0.058   Mean: 34.491   Std: 131.434
+Node 139:  Time On 0.060   Mean: 35.619   Std: 130.824
+
+
+Total: 8.365
+
+MeanOn: 5372.240  StdOn: 80217.763 		 MeanOff: 58846.932  StdOff: 19490.333
+
+
+Avg On 0.062744    95%: 0.059871     80%: 0.058854     75%: 0.058668     50%: 0.057999     25%: 0.057427
+
+Last 75% of experiments had duty-cycle: 0.058668

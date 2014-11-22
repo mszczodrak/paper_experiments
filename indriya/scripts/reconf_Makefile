@@ -1,0 +1,54 @@
+# Makefile to open twonet log and send to
+# Fennec to process SerialDbgs messages
+#
+# Author: Marcin K Szczodrak
+# Updated: 4/24/2014
+
+THIS_DIR=`pwd`
+LOG_RESULT=result.txt
+
+ROOT_FILE=ROOT
+ROOT=$(shell cat ROOT)
+
+TESTBED_CONF=../../data/indriya_conf.py
+
+SCRIPT9=$(FENNEC_FOX_LIB)/support/sdk/python/translate_results.py
+SCRIPT9_DATA=str_$(LOG_RESULT)
+
+SCRIPT21=../../scripts/sdf_stats.py
+SCRIPT21_DATA=sdf.json
+
+SCRIPT2=../../../scripts/duty_cycle_v3.py
+SCRIPT2_DATA=duty_cycle.json
+SCRIPT3=../../../scripts/duty_cycle_analyze.py
+SCRIPT3_DATA=duty_cycle_analyze.json
+
+all: $(LOG_RESULT) $(SCRIPT9_DATA) $(SCRIPT21_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA)
+
+$(LOG_RESULT): *.zip
+	unzip -o *.zip
+	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_indriya.py *.dat > $(LOG_RESULT)
+
+$(SCRIPT2_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
+	$(SCRIPT2) $(LOG_RESULT) $(SCRIPT2_DATA) $(TESTBED_CONF) $(ROOT)
+
+$(SCRIPT3_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
+	$(SCRIPT3) $(LOG_RESULT) $(SCRIPT3_DATA) $(TESTBED_CONF) $(ROOT)
+
+$(SCRIPT9_DATA): $(LOG_RESULT)
+	$(SCRIPT9) $(LOG_RESULT) > $(SCRIPT9_DATA)
+
+$(SCRIPT21_DATA): $(LOG_RESULT) $(TESTBED_CONF)
+	$(SCRIPT21) $(LOG_RESULT) $(SCRIPT21_DATA) $(TESTBED_CONF)
+
+clean:
+	if [ -f *.dat ]; then rm *dat; fi
+	if [ -f *summary ]; then rm -rf *summary; fi
+	if [ -f *LOG ]; then rm -rf *LOG; fi
+	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
+	rm -rf str_result.txt
+
+deep-clean: clean
+	rm -rf *.json
+	rm -rf *.txt
+

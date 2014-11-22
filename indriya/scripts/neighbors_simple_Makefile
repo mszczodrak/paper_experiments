@@ -1,0 +1,89 @@
+# Makefile to open twonet log and send to
+# Fennec to process SerialDbgs messages
+#
+# Author: Marcin K Szczodrak
+# Updated: 4/24/2014
+
+THIS_DIR=`pwd`
+LOG_RESULT=result.txt
+
+CONF=../../../data/cc2420_conf.py
+TESTBED_CONF=../../../data/indriya_conf.py
+N_FILE=N
+N=$(shell cat N)
+M_FILE=M
+M=$(shell cat M)
+INIT_POWER_FILE=init.power
+INIT_POWER=$(shell cat init.power)
+
+SCRIPT1=../../../../scripts/neighbors_simple_test_starts.py
+SCRIPT1_DATA=neighborhood.json
+
+SCRIPT2=../../../../graphs/graph_neighbors_simple_final_stats.py
+SCRIPT2_TITLE="Final Results"
+SCRIPT2_GRAPH=graph_Final_Results
+
+SCRIPT3=../../../../graphs/graph_neighborhood_snapshots.py
+SCRIPT3_TITLE="Neighborhood Statistics"
+SCRIPT3_GRAPH=graph_Neighborhood_Statistics
+
+SCRIPT5=../../../../graphs/graph_tx_power.py
+SCRIPT5_TITLE="TX Power"
+SCRIPT5_GRAPH=graph_TX_Power
+
+SCRIPT6=../../../../scripts/setup_digraph_topology.py
+SCRIPT6_DATA=graph_data.json
+
+SCRIPT7=../../../../graphs/digraph_power.py
+SCRIPT7_TITLE="Power"
+SCRIPT7_GRAPH=graph_Power
+
+SCRIPT8=../../../../graphs/digraph_neighbors.py
+SCRIPT8_TITLE="Neighborhood"
+SCRIPT8_GRAPH=graph_Neighborhood
+
+SCRIPT9=../../../../scripts/neighbors_simple_power_distribution.py
+SCRIPT9_DATA=power_distribution.h
+
+all: $(LOG_RESULT) $(SCRIPT1_DATA) $(SCRIPT9_DATA) $(SCRIPT2_GRAPH) $(SCRIPT3_GRAPH) $(SCRIPT5_GRAPH) $(SCRIPT6_DATA) $(SCRIPT7_GRAPH) $(SCRIPT8_GRAPH) 
+
+$(LOG_RESULT): *.zip
+	unzip -o *.zip
+	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_indriya.py *.dat > $(LOG_RESULT)
+
+$(SCRIPT1_DATA): $(LOG_RESULT) $(INIT_POWER_FILE)
+	$(SCRIPT1) $(LOG_RESULT) $(SCRIPT1_DATA) $(INIT_POWER)
+
+$(SCRIPT2_GRAPH): $(SCRIPT1_DATA) $(CONF) $(M_FILE) $(N_FILE)
+	$(SCRIPT2) $(SCRIPT1_DATA) $(CONF) $(M) $(N) $(SCRIPT2_TITLE)
+
+$(SCRIPT3_GRAPH): $(SCRIPT1_DATA) $(CONF)
+	$(SCRIPT3) $(SCRIPT1_DATA) $(CONF) $(SCRIPT3_TITLE)
+
+$(SCRIPT5_GRAPH): $(SCRIPT1_DATA) $(CONF)
+	$(SCRIPT5) $(SCRIPT1_DATA) $(CONF) $(SCRIPT5_TITLE)
+
+$(SCRIPT6_DATA): $(SCRIPT1_DATA)
+	$(SCRIPT6) $(SCRIPT1_DATA) $(SCRIPT6_DATA)
+
+$(SCRIPT7_GRAPH): $(SCRIPT1_DATA) $(SCRIPT6_DATA) $(CONF)
+	$(SCRIPT7) $(SCRIPT1_DATA) $(SCRIPT6_DATA) $(CONF) $(SCRIPT7_TITLE)
+
+$(SCRIPT8_GRAPH): $(SCRIPT1_DATA) $(SCRIPT6_DATA) $(CONF)
+	$(SCRIPT8) $(SCRIPT1_DATA) $(SCRIPT6_DATA) $(CONF) $(SCRIPT8_TITLE)
+
+$(SCRIPT9_DATA): $(SCRIPT1_DATA) $(TESTBED_CONF) $(M_FILE) $(N_FILE) $(INIT_POWER_FILE)
+	$(SCRIPT9) $(SCRIPT1_DATA) $(TESTBED_CONF) $(M) $(N) $(INIT_POWER)
+
+clean:
+	if [ -f *.dat ]; then rm *dat; fi
+	if [ -f *summary ]; then rm -rf *summary; fi
+	if [ -f *LOG ]; then rm -rf *LOG; fi
+	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
+	if [ -f $(SCRIPT1_DATA) ]; then rm $(SCRIPT1_DATA); fi
+	rm -rf graph_*
+#	if [ -f $(SCRIPT2_DATA) ]; then rm $(SCRIPT2_DATA); fi
+#	if [ -f $(SCRIPT3_DATA) ]; then rm $(SCRIPT3_DATA); fi
+#	if [ -f $(SCRIPT4_DATA) ]; then rm $(SCRIPT4_DATA); fi
+
+

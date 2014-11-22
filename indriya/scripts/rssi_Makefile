@@ -1,0 +1,31 @@
+# Makefile to open twonet log and send to
+# Fennec to process SerialDbgs messages
+#
+# Author: Marcin K Szczodrak
+# Updated: 4/24/2014
+
+THIS_DIR=`pwd`
+LOG_RESULT=result.txt
+SCRIPT1=../../../scripts/rssi_test_stats.py
+SCRIPT1_DATA=rssi.json
+
+all: $(LOG_RESULT) $(SCRIPT1_DATA)
+
+$(LOG_RESULT): *.zip
+	unzip -o *.zip
+	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_indriya.py *.dat > $(LOG_RESULT)
+
+$(SCRIPT1_DATA): $(LOG_RESULT)
+	$(SCRIPT1) $(LOG_RESULT) $(SCRIPT1_DATA)
+
+clean:
+	if [ -f *.dat ]; then rm *dat; fi
+	if [ -f *summary ]; then rm -rf *summary; fi
+	if [ -f *LOG ]; then rm -rf *LOG; fi
+	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
+	if [ -f $(SCRIPT1_DATA) ]; then rm $(SCRIPT1_DATA); fi
+
+deep-clean: clean
+	rm -rf *.json
+	rm -rf *.txt
+

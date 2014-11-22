@@ -1,0 +1,133 @@
+# Makefile to open twonet log and send to
+# Fennec to process SerialDbgs messages
+#
+# Author: Marcin K Szczodrak
+# Updated: 4/24/2014
+
+THIS_DIR=`pwd`
+LOG_RESULT=result.txt
+
+CONF=../../../data/cc2420_conf.py
+TESTBED_CONF=../../../data/indriya_conf.py
+ETX_FILE=threshold.etx
+ETX=$(shell cat threshold.etx)
+N_FILE=N
+N=$(shell cat N)
+M_FILE=M
+M=$(shell cat M)
+
+
+SCRIPT1=../../../../scripts/split_state.py
+SCRIPT1_DATA1=state_0_seq_0_result.txt
+SCRIPT1_DATA2=state_1_seq_1_result.txt	# Neighborhood data
+SCRIPT1_DATA3=state_2_seq_2_result.txt	# CTP / Counter data
+
+# Counter / CTP - uses SCRIPT1_DATA3
+
+SCRIPT31=../../../../scripts/counter_test_stats.py
+SCRIPT31_DATA=counter.json
+SCRIPT32=../../../../scripts/duty_cycle.py
+SCRIPT32_DATA=duty_cycle.json
+SCRIPT33=../../../../scripts/ctp_routing_stats.py
+SCRIPT33_DATA=ctp_routing.json
+SCRIPT34=../../../../scripts/hops_vs_lpl.py
+SCRIPT34_DATA=hops_vs_lpl.json
+
+
+# Neighborhood - uses SCRIPT1_DATA2
+
+CONF=../../../data/cc2420_conf.py
+ETX_FILE=threshold.etx
+ETX=$(shell cat threshold.etx)
+
+SCRIPT21=../../../../scripts/neighbor_test_starts.py
+SCRIPT21_DATA=neighborhood.json
+
+SCRIPT22=../../../../graphs/graph_final_stats.py
+SCRIPT22_TITLE="Final Results"
+SCRIPT22_GRAPH=graph_Final_Results
+
+SCRIPT23=../../../../graphs/graph_neighborhood_snapshots.py
+SCRIPT23_TITLE="Neighborhood Statistics"
+SCRIPT23_GRAPH=graph_Neighborhood_Statistics
+
+SCRIPT24=../../../../graphs/graph_good_neighbors_snapshots.py
+SCRIPT24_TITLE="Good Neighborhood Statistics"
+SCRIPT24_GRAPH=graph_Good_Neighborhood_Statistics
+
+SCRIPT25=../../../../graphs/graph_tx_power_and_etx_snapshots.py
+SCRIPT25_TITLE="TX Power and ETX"
+SCRIPT25_GRAPH=graph_TX_Power_and_ETX
+
+SCRIPT26=../../../../graphs/digraph_power.py
+SCRIPT26_TITLE="Power"
+SCRIPT26_GRAPH=graph_Power
+
+SCRIPT27=../../../../graphs/digraph_neighbors.py
+SCRIPT27_TITLE="Neighborhood"
+SCRIPT27_GRAPH=graph_Neighborhood
+
+all: $(LOG_RESULT) \
+	$(SCRIPT1_DATA1) \
+	$(SCRIPT31_DATA) $(SCRIPT32_DATA) $(SCRIPT33_DATA) $(SCRIPT34_DATA) \
+	$(SCRIPT21_DATA) $(SCRIPT22_GRAPH) $(SCRIPT23_GRAPH) $(SCRIPT24_GRAPH) \
+	$(SCRIPT25_GRAPH) $(SCRIPT26_GRAPH) $(SCRIPT27_GRAPH)
+
+$(LOG_RESULT): *.zip
+	unzip -o *.zip
+	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_indriya.py *.dat > $(LOG_RESULT)
+
+$(SCRIPT1_DATA1): $(LOG_RESULT) $(TESTBED_CONF)
+	$(SCRIPT1) $(LOG_RESULT) $(TESTBED_CONF)
+
+# Counter / CTP
+$(SCRIPT31_DATA): $(SCRIPT1_DATA3) $(TESTBED_CONF)
+	$(SCRIPT31) $(SCRIPT1_DATA3) $(SCRIPT31_DATA) $(TESTBED_CONF)
+
+$(SCRIPT32_DATA): $(SCRIPT1_DATA3) $(TESTBED_CONF)
+	$(SCRIPT32) $(SCRIPT1_DATA3) $(SCRIPT32_DATA) $(TESTBED_CONF)
+
+$(SCRIPT33_DATA): $(SCRIPT1_DATA3) $(TESTBED_CONF)
+	$(SCRIPT33) $(SCRIPT1_DATA3) $(SCRIPT33_DATA) $(TESTBED_CONF)
+
+$(SCRIPT34_DATA): $(SCRIPT32_DATA) $(SCRIPT33_DATA)
+	$(SCRIPT34) $(SCRIPT32_DATA) $(SCRIPT33_DATA) $(SCRIPT34_DATA)
+
+
+# Neighborhood
+
+$(SCRIPT21_DATA): $(SCRIPT1_DATA2)
+	$(SCRIPT21) $(SCRIPT1_DATA2) $(SCRIPT21_DATA)
+
+$(SCRIPT22_GRAPH): $(SCRIPT21_DATA) $(CONF) $(ETX_FILE)
+	$(SCRIPT22) $(SCRIPT21_DATA) $(CONF) $(ETX) $(M) $(N) $(SCRIPT22_TITLE)
+
+$(SCRIPT23_GRAPH): $(SCRIPT21_DATA) $(CONF)
+	$(SCRIPT23) $(SCRIPT21_DATA) $(CONF) $(SCRIPT23_TITLE)
+
+$(SCRIPT24_GRAPH): $(SCRIPT21_DATA) $(CONF)
+	$(SCRIPT24) $(SCRIPT21_DATA) $(CONF) $(SCRIPT24_TITLE)
+
+$(SCRIPT25_GRAPH): $(SCRIPT21_DATA) $(CONF) $(ETX_FILE)
+	$(SCRIPT25) $(SCRIPT21_DATA) $(CONF) $(ETX) $(SCRIPT25_TITLE)
+
+$(SCRIPT26_GRAPH): $(SCRIPT21_DATA) $(CONF)
+	$(SCRIPT26) $(SCRIPT21_DATA) $(CONF) $(SCRIPT26_TITLE)
+
+$(SCRIPT27_GRAPH): $(SCRIPT21_DATA) $(CONF) $(ETX_FILE)
+	$(SCRIPT27) $(SCRIPT21_DATA) $(CONF) $(SCRIPT27_TITLE)
+
+
+clean:
+	if [ -f *.dat ]; then rm *dat; fi
+	if [ -f *summary ]; then rm -rf *summary; fi
+	if [ -f *LOG ]; then rm -rf *LOG; fi
+	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
+	if [ -f $(SCRIPT31_DATA) ]; then rm $(SCRIPT31_DATA); fi
+	if [ -f $(SCRIPT32_DATA) ]; then rm $(SCRIPT32_DATA); fi
+	if [ -f $(SCRIPT33_DATA) ]; then rm $(SCRIPT33_DATA); fi
+	if [ -f $(SCRIPT34_DATA) ]; then rm $(SCRIPT34_DATA); fi
+	rm -rf graph_*
+	rm -rf state_*
+
+
