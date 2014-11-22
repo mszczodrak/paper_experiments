@@ -1,0 +1,8 @@
+*.dat
+*.LOG
+*.summary
+*.txt
+*.json
+*.csv
+*.result
+graph_
