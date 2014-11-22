@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: FlockLab_Testconfiguration.xml 2427 2013-09-25 07:24:04Z walserc $ -->
+
+<testConf xmlns="http://www.flocklab.ethz.ch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flocklab.ethz.ch xml/flocklab.xsd">
+	<generalConf>
+		<name>FlockLab Tutorial 2: Hello World</name>
+		<description>Example app for FlockLab tutorial 2. The app prints "Hello World!" on startup over the serial port.</description>
+		<scheduleAsap>
+			<durationSecs>10</durationSecs>
+		</scheduleAsap>
+		<emailResults>yes</emailResults>
+	</generalConf>
+	
+	<targetConf>
+		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 031 032 033 200 201 202 204</obsIds>
+		<voltage>3.3</voltage>
+		<dbImageId>CHANGEME</dbImageId>
+	</targetConf>
+
+	<serialConf>
+		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 031 032 033 200 201 202 204</obsIds>
+		<baudrate>115200</baudrate>
+		<mode>ascii</mode>
+	</serialConf>
+</testConf>

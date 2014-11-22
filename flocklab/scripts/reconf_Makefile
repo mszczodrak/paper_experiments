@@ -1,0 +1,78 @@
+# Makefile to open twonet log and send to
+# Fennec to process SerialDbgs messages
+#
+# Author: Marcin K Szczodrak
+# Updated: 4/24/2014
+
+THIS_DIR=`pwd`
+LOG_RESULT=result.txt
+
+TESTBED_CONF=../../data/flocklab_conf.py
+
+ROOT_FILE=ROOT
+ROOT=$(shell cat ROOT)
+SPS_FILE=SPS
+SPS=$(shell cat SPS)
+
+SCRIPT2=../../scripts/duty_cycle2.py
+SCRIPT2_SRC=gpiotracing.csv
+SCRIPT2_DATA=duty_cycle.json
+
+SCRIPT6=../../scripts/power_summary.py
+SCRIPT6_SRC=powerprofilingstats.csv
+SCRIPT6_DATA=summary_power.json
+
+SCRIPT7=../../scripts/detailed_power_analysis.py
+SCRIPT7_SRC=powerprofiling.csv
+SCRIPT7_DATA=power_analysis.json
+
+SCRIPT9=$(FENNEC_FOX_LIB)/support/sdk/python/translate_results.py
+SCRIPT9_DATA=str_$(LOG_RESULT)
+
+SCRIPT10=../../scripts/split_gpio_trace.py
+SCRIPT10_SRC=gpiotracing.csv
+SCRIPT10_DATA=gpiotracing*.json
+
+SCRIPT12=../../scripts/sdf_trace.py
+SCRIPT12_SRC=gpiotracing_LED3_Network.json
+SCRIPT12_DATA=sdf_stats.json
+
+all: $(LOG_RESULT) $(SCRIPT9_DATA) $(SCRIPT10_DATA) $(SCRIPT2_DATA) $(SCRIPT12_DATA) $(SCRIPT6_DATA) # $(SCRIPT7_DATA)
+
+$(LOG_RESULT): *.tar.gz
+	tar -zxvf *.tar.gz
+	mv [0-9]*/* ./
+	rm -rf [0-9]*
+	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_flocklab.py serial.csv > $(LOG_RESULT)
+
+$(SCRIPT2_DATA): $(SCRIPT2_SRC) $(TESTBED_CONF) $(ROOT_FILE)
+	$(SCRIPT2) $(SCRIPT2_SRC) LED2 $(SCRIPT2_DATA) $(TESTBED_CONF) $(ROOT)
+
+$(SCRIPT6_DATA): $(SCRIPT6_SRC) $(TESTBED_CONF) $(ROOT_FILE)
+	$(SCRIPT6) $(SCRIPT6_SRC) $(SCRIPT6_DATA) $(TESTBED_CONF) $(ROOT)
+
+$(SCRIPT7_DATA): $(SCRIPT7_SRC) $(TESTBED_CONF) $(ROOT_FILE) $(SPS_FILE)
+	$(SCRIPT7) $(SCRIPT7_SRC) $(SCRIPT7_DATA) $(TESTBED_CONF) $(ROOT) $(SPS)
+
+$(SCRIPT9_DATA): $(LOG_RESULT)
+	$(SCRIPT9) $(LOG_RESULT) > $(SCRIPT9_DATA)
+
+$(SCRIPT10_DATA): $(SCRIPT10_SRC) $(TESTBED_CONF)
+	$(SCRIPT10) $(SCRIPT10_SRC) $(TESTBED_CONF) LED2 Radio LED3 Network LED1 Application
+
+$(SCRIPT12_DATA): $(SCRIPT12_SRC) $(TESTBED_CONF)
+	$(SCRIPT12) $(SCRIPT12_SRC) $(SCRIPT12_DATA) $(TESTBED_CONF)
+
+
+clean:
+	if [ -f *.dat ]; then rm *dat; fi
+	if [ -f *summary ]; then rm -rf *summary; fi
+	if [ -f *LOG ]; then rm -rf *LOG; fi
+	rm -rf $(LOG_RESULT)
+	rm -rf *csv
+	rm -rf *.txt
+
+deep-clean: clean
+	rm -rf *.json
+	rm -rf *.txt
+	

@@ -1,0 +1,10 @@
+// $Id: Makefile 2375 2013-04-19 08:35:27Z walserc $
+COMPONENT=BaseStationC
+SENSORBOARD=flocklab
+CFLAGS += -I../../tos/sensorboards/flocklab
+CFLAGS += -DCC2420_NO_ACKNOWLEDGEMENTS
+CFLAGS += -DCC2420_NO_ADDRESS_RECOGNITION
+CFLAGS += -DTASKLET_IS_TASK
+
+include $(MAKERULES)
+

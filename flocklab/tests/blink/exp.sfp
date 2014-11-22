@@ -1,0 +1,9 @@
+
+process hello { 
+	blink(1, 500)
+	nullNet()
+	nullAM() }
+
+state simple { hello }
+
+start simple

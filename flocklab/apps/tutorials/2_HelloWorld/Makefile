@@ -1,0 +1,7 @@
+# $Id: Makefile 2368 2013-04-18 12:11:28Z walserc $
+# Copyright (c) 2013 ETH Zurich 
+# All rights reserved.
+#
+COMPONENT=FlockLabHelloWorldC
+
+include $(MAKERULES)

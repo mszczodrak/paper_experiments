@@ -1,0 +1,54 @@
+# Makefile to open twonet log and send to
+# Fennec to process SerialDbgs messages
+#
+# Author: Marcin K Szczodrak
+# Updated: 4/24/2014
+
+THIS_DIR=`pwd`
+LOG_RESULT=result.txt
+
+TESTBED_CONF=../../data/flocklab_conf.py
+
+#SCRIPT1=../../../scripts/counter_test_stats.py
+#SCRIPT1_DATA=counter.json
+#SCRIPT2=../../../scripts/duty_cycle.py
+#SCRIPT2_DATA=duty_cycle.json
+#SCRIPT3=../../../scripts/ctp_routing_stats.py
+#SCRIPT3_DATA=ctp_routing.json
+#SCRIPT4=../../../scripts/hops_vs_lpl.py
+#SCRIPT4_DATA=hops_vs_lpl.json
+#
+all: $(LOG_RESULT) #$(SCRIPT1_DATA) #$(SCRIPT2_DATA) $(SCRIPT3_DATA) $(SCRIPT4_DATA)
+
+$(LOG_RESULT): *.tar.gz
+	tar -zxvf *.tar.gz
+	cp [0-9]*/* ./
+	for file in *.csv; do \
+		sort $$file > temp_sorted; \
+		mv temp_sorted $$file; \
+	done
+	rm -rf [0-9]*
+	rm -rf temp_sorted
+	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_flocklab.py serial.csv > $(LOG_RESULT)
+
+$(SCRIPT1_DATA): $(LOG_RESULT) $(TESTBED_CONF)
+	$(SCRIPT1) $(LOG_RESULT) $(SCRIPT1_DATA) $(TESTBED_CONF)
+
+$(SCRIPT2_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
+	$(SCRIPT2) $(LOG_RESULT) $(SCRIPT2_DATA) $(TESTBED_CONF) $(ROOT)
+
+$(SCRIPT3_DATA): $(LOG_RESULT) $(TESTBED_CONF)
+	$(SCRIPT3) $(LOG_RESULT) $(SCRIPT3_DATA) $(TESTBED_CONF)
+
+$(SCRIPT4_DATA): $(SCRIPT2_DATA) $(SCRIPT3_DATA) 
+	$(SCRIPT4) $(SCRIPT2_DATA) $(SCRIPT3_DATA) $(SCRIPT4_DATA)
+
+clean:
+	rm -rf *.csv
+	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
+#	if [ -f $(SCRIPT1_DATA) ]; then rm $(SCRIPT1_DATA); fi
+#	if [ -f $(SCRIPT2_DATA) ]; then rm $(SCRIPT2_DATA); fi
+#	if [ -f $(SCRIPT3_DATA) ]; then rm $(SCRIPT3_DATA); fi
+#	if [ -f $(SCRIPT4_DATA) ]; then rm $(SCRIPT4_DATA); fi
+
+

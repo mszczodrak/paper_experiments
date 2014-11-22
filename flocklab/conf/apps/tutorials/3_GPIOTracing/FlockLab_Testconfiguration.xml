@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: FlockLab_Testconfiguration.xml 2372 2013-04-18 13:50:02Z walserc $ -->
+
+<testConf xmlns="http://www.flocklab.ethz.ch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flocklab.ethz.ch xml/flocklab.xsd">
+	<generalConf>
+		<name>FlockLab Tutorial 3: Blink</name>
+		<description>Example app for FlockLab tutorial 3. The app does a binary count on the three external LEDs on the FlockLab observer.</description>
+		<scheduleAsap>
+			<durationSecs>60</durationSecs>
+		</scheduleAsap>
+		<emailResults>yes</emailResults>
+	</generalConf>
+	
+	<targetConf>
+		<obsIds>001 002 204</obsIds>
+		<voltage>3.3</voltage>
+		<embeddedImageId>image_1</embeddedImageId>
+	</targetConf>
+
+	<gpioTracingConf>
+		<obsIds>001 002 204</obsIds>
+		<pinConf>
+			<pin>LED1</pin>
+			<edge>both</edge>
+			<mode>continuous</mode>
+		</pinConf>
+		<pinConf>
+			<pin>LED2</pin>
+			<edge>both</edge>
+			<mode>continuous</mode>
+		</pinConf>
+		<pinConf>
+			<pin>LED3</pin>
+			<edge>both</edge>
+			<mode>continuous</mode>
+		</pinConf>
+	</gpioTracingConf>
+
+	<imageConf>
+		<embeddedImageId>image_1</embeddedImageId>
+		<name>Blink</name>
+		<description>Blink app as used in FlockLab tutorial 3</description>
+		<platform>tmote</platform>
+		<os>tinyos</os>
+		<data>
+			CHANGEME
+		</data>
+	</imageConf>
+
+</testConf>

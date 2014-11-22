@@ -1,0 +1,70 @@
+# Makefile to open twonet log and send to
+# Fennec to process SerialDbgs messages
+#
+# Author: Marcin K Szczodrak
+# Updated: 4/24/2014
+
+THIS_DIR=`pwd`
+LOG_RESULT=result.txt
+
+TESTBED_CONF=../../data/flocklab_conf.py
+
+ROOT_FILE=ROOT
+ROOT=$(shell cat ROOT)
+SPS_FILE=SPS
+SPS=$(shell cat SPS)
+
+SCRIPT1=../../../scripts/counter_receiver_stats.py
+SCRIPT1_DATA=counter.json
+
+SCRIPT2=../../scripts/duty_cycle.py
+SCRIPT2_SRC=gpiotracing.csv
+SCRIPT2_DATA=duty_cycle.json
+
+SCRIPT3=../../scripts/power_summary.py
+SCRIPT3_SRC=powerprofilingstats.csv
+SCRIPT3_DATA=summary_power.json
+
+#SCRIPT4=../../scripts/detailed_power_analysis.py
+#SCRIPT4_SRC=powerprofiling.csv
+#SCRIPT4_DATA=power_analysis.json
+
+SCRIPT10=../../scripts/split_gpio_trace.py
+SCRIPT10_SRC=gpiotracing.csv
+SCRIPT10_DATA=gpiotracing*.json
+
+
+all: $(LOG_RESULT) $(SCRIPT1_DATA) $(SCRIPT10_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA) #$(SCRIPT4_DATA)
+
+$(LOG_RESULT): *.tar.gz
+	tar -zxvf *.tar.gz
+	mv [0-9]*/* ./
+	rm -rf [0-9]*
+	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_flocklab.py serial.csv > $(LOG_RESULT)
+
+$(SCRIPT1_DATA): $(LOG_RESULT) $(TESTBED_CONF)
+	$(SCRIPT1) $(LOG_RESULT) $(SCRIPT1_DATA) $(TESTBED_CONF)
+
+$(SCRIPT2_DATA): $(SCRIPT2_SRC) $(TESTBED_CONF) $(ROOT_FILE)
+	$(SCRIPT2) $(SCRIPT2_SRC) LED2 $(SCRIPT2_DATA) $(TESTBED_CONF) $(ROOT)
+
+$(SCRIPT3_DATA): $(SCRIPT3_SRC) $(TESTBED_CONF) $(ROOT_FILE)
+	$(SCRIPT3) $(SCRIPT3_SRC) $(SCRIPT3_DATA) $(TESTBED_CONF) $(ROOT)
+
+#$(SCRIPT4_DATA): $(SCRIPT4_SRC) $(TESTBED_CONF) $(ROOT_FILE) $(SPS_FILE)
+#	$(SCRIPT4) $(SCRIPT4_SRC) $(SCRIPT4_DATA) $(TESTBED_CONF) $(ROOT) $(SPS)
+
+
+$(SCRIPT10_DATA): $(SCRIPT10_SRC) $(TESTBED_CONF)
+	$(SCRIPT10) $(SCRIPT10_SRC) $(TESTBED_CONF) LED2 Radio LED3 Network LED1 Application
+
+clean:
+	rm -rf *.csv
+	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
+	if [ -f $(SCRIPT1_DATA) ]; then rm $(SCRIPT1_DATA); fi
+	if [ -f $(SCRIPT2_DATA) ]; then rm $(SCRIPT2_DATA); fi
+	if [ -f $(SCRIPT3_DATA) ]; then rm $(SCRIPT3_DATA); fi
+#	if [ -f $(SCRIPT4_DATA) ]; then rm $(SCRIPT4_DATA); fi
+	rm -rf *.json
+
+

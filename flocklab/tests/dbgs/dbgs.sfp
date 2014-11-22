@@ -1,0 +1,6 @@
+process test { dbgs(200) nullNet() nullAM() }
+
+state single { test }
+
+start single
+
