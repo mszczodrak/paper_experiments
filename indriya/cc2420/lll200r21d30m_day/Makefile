@@ -1,1 +1,1 @@
-../../scripts/counter_receiver_lpl_Makefile
+../../scripts/counter_lll_Makefile
