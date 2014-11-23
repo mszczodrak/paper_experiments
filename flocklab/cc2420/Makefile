@@ -14,11 +14,21 @@ DIRS=$(CCLS) $(CFRS) $(RSSIS) $(ONES) $(DEEP) $(LLL) $(EED) $(DEST) $(DATA) $(EX
 
 MAKE=make
 
-all:
+all: ccl_tests
 	echo 'Nothing to make'
 
-ccl_tests: CCLS
+ccl_tests:
 	for d in $(CCLS); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+deep_tests:
+	for d in $(DEEP); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+lpl_tests:
+	for d in $(LPL); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+ones_tests:
+	for d in $(ONES); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
 
 
 clean: 
