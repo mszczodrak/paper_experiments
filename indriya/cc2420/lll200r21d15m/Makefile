@@ -1,1 +1,0 @@
-../../scripts/counter_receiver_lpl_Makefile
