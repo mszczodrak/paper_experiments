@@ -20,6 +20,18 @@ ccl_tests:
 cfr_tests:
 	for d in $(CFRS); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
+deep_tests:
+	for d in $(DEEP); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+lll_tests:
+	for d in $(LLL); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+ones_tests:
+	for d in $(ONES); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+data_tests:
+	for d in $(DATA); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
 clean: 
 	for d in $(DIRS); do (cd $$d; $(MAKE) clean; cd ..); done
 
