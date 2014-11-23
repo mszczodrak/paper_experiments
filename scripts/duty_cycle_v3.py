@@ -34,6 +34,7 @@ except:
 	print "failed to import %s\n" % (testbed_conf_module)
 	exit()
 
+skip = True
 
 for line in f.readlines():
 	l = line.split()
@@ -67,14 +68,17 @@ for line in f.readlines():
 		nodes[mote_id] = new_node
 
 	if dbg == DBGS_RADIO_START_DONE:
+		skip = False
 		millic = d1 * pow(2,16) + d2
 		nodes[mote_id]['start_done_t'].append(millic)
 
 	if dbg == DBGS_RADIO_STOP_DONE:
+		skip = False
 		millic = d1 * pow(2,16) + d2
 		nodes[mote_id]['stop_done_t'].append(millic)
 
-
+if skip:
+	sys.exit(0)
 
 all_percent_on = []
 all_percent_on_last_75 = []

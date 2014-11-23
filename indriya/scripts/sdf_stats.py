@@ -99,4 +99,11 @@ print "Median  %.4f" % (results["median_delay"])
 print "Max     %.4f" % (results["max_delay"])
 print
 
+del results["delays"]
+del results["stop_delays"]
+
+# save as json
+with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
+	json.dump(results, fp, sort_keys=True, indent=4)
+
 
