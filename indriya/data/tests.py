@@ -89,22 +89,22 @@ def data_sync(root_dir, pwd, title):
 		summary = {}
 	
 		with open("%s/NUM" % (full_path), "r") as fp:
-			summary["NUM"] = fp.read().rstrip()
+			summary["NUM"] = int(fp.read().rstrip())
 		
 		with open("%s/DELAY" % (full_path), "r") as fp:
-			summary["DELAY"] = fp.read().rstrip()
+			summary["DELAY"] = int(fp.read().rstrip())
 	
 		with open("%s/TEST_DELAY" % (full_path), "r") as fp:
-			summary["TEST_DELAY"] = fp.read().rstrip()
+			summary["TEST_DELAY"] = int(fp.read().rstrip())
 	
 		with open("%s/LPL" % (full_path), "r") as fp:
-			summary["LPL"] = fp.read().rstrip()
+			summary["LPL"] = int(fp.read().rstrip())
 	
 		summary["NUMBER"] = "-1"
 
 		for f in os.listdir(full_path):
 			if f.endswith(".zip"):
-				summary["NUMBER"] = f.split("-")[1].split(".")[0]
+				summary["NUMBER"] = int(f.split("-")[1].split(".")[0])
 				break
 
 		try:	
