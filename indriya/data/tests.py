@@ -76,4 +76,62 @@ def ccl(root_dir, pwd, title):
 		json.dump(ccl_data, fp, sort_keys=True, indent=4)
 
 
+
+
+def data_sync(root_dir, pwd, title):
+	sync_data = []
+
+	for i in os.listdir(root_dir):
+		if not i.startswith("data_sync"):
+			continue
+		full_path = "%s/%s" % (root_dir, i)
+
+		summary = {}
 	
+		with open("%s/NUM" % (full_path), "r") as fp:
+			summary["NUM"] = fp.read().rstrip()
+		
+		with open("%s/DELAY" % (full_path), "r") as fp:
+			summary["DELAY"] = fp.read().rstrip()
+	
+		with open("%s/TEST_DELAY" % (full_path), "r") as fp:
+			summary["TEST_DELAY"] = fp.read().rstrip()
+	
+		with open("%s/LPL" % (full_path), "r") as fp:
+			summary["LPL"] = fp.read().rstrip()
+	
+		summary["NUMBER"] = "-1"
+
+		for f in os.listdir(full_path):
+			if f.endswith(".zip"):
+				summary["NUMBER"] = f.split("-")[1].split(".")[0]
+				break
+
+		try:	
+			with open("%s/summary_data_sync.json" % (full_path), "r") as fp:	
+				content = fp.read()
+				data = yaml.load(content)
+		except:
+			print "Error: missing %s\n" % ("%s/summary_data_sync.json" % (full_path))
+			continue
+			#sys.exit(1)
+
+		summary["avg_delay"] = data["avg_delay"]
+		summary["avg_lost"] = data["avg_lost"]
+		summary["avg_new_var_delay"] = data["avg_new_var_delay"]
+		summary["chance_of_lost"] = data["chance_of_lost"]
+		summary["experiment_length"] = data["experiment_length"]
+		summary["max_delay"] = data["max_delay"]
+		summary["max_lost"] = data["max_lost"]
+		summary["min_delay"] = data["min_delay"]
+		summary["min_lost"] = data["min_lost"]
+		summary["num_of_globals"] = data["num_of_globals"]
+		summary["num_of_nodes"] = data["num_of_nodes"]
+
+		sync_data.append(summary)
+
+	with open(title, 'wb') as fp:
+		json.dump(sync_data, fp, sort_keys=True, indent=4)
+
+
+
