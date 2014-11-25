@@ -1,0 +1,6 @@
+uses larger CTP Queues
+extra queue length set to 20
+
+different ROOT -> 20
+also CTP after Start gets
+currentInterval = minInterval;
