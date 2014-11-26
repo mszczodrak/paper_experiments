@@ -7,7 +7,8 @@ DEST=`find -L ./dest* -prune`
 LLL=`find -L ./lll* -prune`
 EED=`find -L ./eed* -prune`
 DATA=`find -L ./data* -prune`
-DIRS=$(CCLS) $(CFRS) $(RSSIS) $(ONES) $(DEEP) $(LLL) $(EED) $(DEST) $(DATA)
+SYNC=`find -L ./sync* -prune`
+DIRS=$(CCLS) $(CFRS) $(RSSIS) $(ONES) $(DEEP) $(LLL) $(EED) $(DEST) $(DATA) $(SYNC)
 
 MAKE=make
 
@@ -31,6 +32,9 @@ ones_tests:
 
 data_tests:
 	for d in $(DATA); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+sync_delay:
+	for d in $(SYNC); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
 clean: 
 	for d in $(DIRS); do (cd $$d; $(MAKE) clean; cd ..); done
