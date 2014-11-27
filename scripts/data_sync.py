@@ -34,6 +34,7 @@ global_vars = {}
 global_vars_time = {}
 global_hist = []
 global_index = []
+global_records = []
 
 def add_node(mote_id):
 	new_node = {}
@@ -44,6 +45,25 @@ def add_node(mote_id):
 	nodes[mote_id] = new_node
 
 experiment_lenght = 0
+
+def find_record(var_id, data):
+	for i in reversed(range(len(global_records))): 
+		r = global_records[i]
+
+		if r["var_id"] == var_id and r["data"] == data:
+			return r
+
+	return {}
+
+def add_record(mote_id, var_id, data, timestamp):
+	new_record = {}
+	new_record["data"] = data
+	new_record["var_id"] = var_id
+	new_record["mote_id"] = mote_id
+	new_record["timestamp"] = timestamp
+	new_record["receivers"] = []
+	global_records.append(new_record)
+
 
 for line in f.readlines():
 	l = line.split()
@@ -67,7 +87,6 @@ for line in f.readlines():
 		#print line
 		continue
 
-
 	if not(mote_id in nodes.keys()):
 		add_node(mote_id)
 
@@ -86,14 +105,16 @@ for line in f.readlines():
 		global_hist.append( (var_id, d) )
 		global_index.append(v)
 
-		nodes[mote_id]['vars'][var_id] = d
-		nodes[mote_id]['hist'].append( (var_id, d) )
-		nodes[mote_id]['index'].append(v)
+		r = find_record(v,d)
+		if r == {}:
+			add_record(mote_id, v, d, timestamp)
+		else:
+			r["mote_id"] = mote_id
 
 
 	if dbg == DBGS_NEW_REMOTE_PAYLOAD:
 		var_id = d0
-		v = d1
+		conflict = d1
 		d = d2
 
 		if (var_id, d) not in global_hist:
@@ -119,6 +140,17 @@ for line in f.readlines():
 		nodes[mote_id]['hist'].append( (var_id, d) )
 		nodes[mote_id]['index'].append(v)
 
+		r = find_record(var_id,d)
+		if r == {}:
+			print "empty"
+			add_record(0, var_id, d, timestamp)
+			r = find_record(var_id, d)
+			print r
+
+		nr = {}
+		nr["mote_id"] = mote_id
+		nr["timestamp"] = timestamp
+		r["receivers"].append(nr)
 
 
 print "Global Hist len %d\n" % (len(global_hist))
@@ -201,6 +233,8 @@ for mote in nodes.keys():
 network_delays = sorted(network_delays)
 network_losts = sorted(network_losts)
 
+print network_losts
+
 len_delay_75 = len(network_delays) * 75 / 100
 len_delay_95 = len(network_delays) * 95 / 100
 len_delay_99 = len(network_delays) * 99 / 100
@@ -208,6 +242,28 @@ len_delay_99 = len(network_delays) * 99 / 100
 len_lost_75 = len(network_losts) * 75 / 100
 len_lost_95 = len(network_losts) * 95 / 100
 len_lost_99 = len(network_losts) * 99 / 100
+
+
+
+num_of_nodes = len(nodes)
+for r in global_records:
+	timestamp = r["timestamp"]
+	r["receivers_timestamp_diff"] = []
+	for rec in r["receivers"]:
+		r["receivers_timestamp_diff"].append(r["timestamp"] - rec["timestamp"])
+		
+
+	r["number_of_nodes_missed"] = num_of_nodes - len(r["receivers"])
+
+	if len(r["receivers"]) < num_of_nodes - 10:
+		print "%d nodes missed data from %d" % (r["number_of_nodes_missed"], r["mote_id"])
+		
+		
+	
+
+
+
+
 
 summary = {}
 summary['all'] = nodes

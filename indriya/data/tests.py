@@ -180,6 +180,9 @@ def sync_delay(root_dir, pwd, title):
 			#sys.exit(1)
 
 		summary["avg_delay"] = data["avg_delay"]
+		summary["avg_delay_75"] = data["avg_delay_75"]
+		summary["avg_delay_95"] = data["avg_delay_95"]
+		summary["avg_delay_99"] = data["avg_delay_99"]
 		summary["avg_lost"] = data["avg_lost"]
 		summary["avg_new_var_delay"] = data["avg_new_var_delay"]
 		summary["chance_of_lost"] = data["chance_of_lost"]
