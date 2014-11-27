@@ -217,6 +217,4 @@ with open("summary_%s" % sys.argv[2], 'wb') as fp:
 	json.dump(summary, fp, sort_keys=True, indent=4)
 
 
-
-
 set([x for x in l if l.count(global_hist) > 1])
