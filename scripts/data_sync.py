@@ -251,8 +251,8 @@ for r in global_records:
 	r["receivers_timestamp_diff"] = []
 	for rec in r["receivers"]:
 		r["receivers_timestamp_diff"].append(r["timestamp"] - rec["timestamp"])
+		r["receivers_timestamp_diff"] = sorted(r["receivers_timestamp_diff"])
 		
-
 	r["number_of_nodes_missed"] = num_of_nodes - len(r["receivers"])
 
 	if len(r["receivers"]) < num_of_nodes - 10:
