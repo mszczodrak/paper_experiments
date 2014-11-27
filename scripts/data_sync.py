@@ -130,18 +130,27 @@ losts = []
 
 for mote_id in nodes.keys():
 	print "Mote %d" % (mote_id)
-	print "\tLost: ",
+	#print "\tLost: ",
 	nodes[mote_id]['losts'] = []
 	for t in global_hist:
 		if t not in nodes[mote_id]['hist']:
 			nodes[mote_id]['losts'].append(t)
 			if t not in losts:
 				losts.append(t)
-			print t,
+			# print timestamp
+			#print t,
 
 	nodes[mote_id]['lost_count'] = len(nodes[mote_id]['losts'])
 	nodes[mote_id]['min_delay'] = min(  nodes[mote_id]['delay'] )
 	nodes[mote_id]['avg_delay'] = np.array(  nodes[mote_id]['delay'] ).mean()
+	nodes[mote_id]['std_delay'] = np.array(  nodes[mote_id]['delay'] ).std()
+	sorted_delay = sorted(nodes[mote_id]['delay'])
+	len_75 = len(sorted_delay) * 75 / 100
+	len_95 = len(sorted_delay) * 95 / 100
+	len_99 = len(sorted_delay) * 99 / 100
+	nodes[mote_id]['avg_delay_75'] = np.array(  sorted_delay[:len_75] ).mean()
+	nodes[mote_id]['avg_delay_95'] = np.array(  sorted_delay[:len_95] ).mean()
+	nodes[mote_id]['avg_delay_99'] = np.array(  sorted_delay[:len_99] ).mean()
 	nodes[mote_id]['max_delay'] = max(  nodes[mote_id]['delay'] )
 	
 	print "\n\tTotal Lost: %d" % ( nodes[mote_id]['lost_count'] )
@@ -189,6 +198,16 @@ for mote in nodes.keys():
 	network_losts.append( nodes[mote_id]['lost_count'] )
 	network_delays += nodes[mote_id]['delay']
 
+network_delays = sorted(network_delays)
+network_losts = sorted(network_losts)
+
+len_delay_75 = len(network_delays) * 75 / 100
+len_delay_95 = len(network_delays) * 95 / 100
+len_delay_99 = len(network_delays) * 99 / 100
+
+len_lost_75 = len(network_losts) * 75 / 100
+len_lost_95 = len(network_losts) * 95 / 100
+len_lost_99 = len(network_losts) * 99 / 100
 
 summary = {}
 summary['all'] = nodes
@@ -197,9 +216,14 @@ summary['num_of_globals'] = len(global_hist)
 summary['experiment_length'] = experiment_lenght
 summary['min_delay'] = min(network_delays)
 summary['avg_delay'] = np.array(network_delays).mean()
+summary['avg_delay_75'] = np.array(network_delays[:len_delay_75]).mean()
+summary['avg_delay_95'] = np.array(network_delays[:len_delay_95]).mean()
+summary['avg_delay_99'] = np.array(network_delays[:len_delay_99]).mean()
 summary['max_delay'] = max(network_delays)
 summary['min_lost'] = min(network_losts)
 summary['avg_lost'] = np.array(network_losts).mean()
+summary['avg_lost_95'] = np.array(network_losts[:len_lost_95]).mean()
+summary['avg_lost_99'] = np.array(network_losts[:len_lost_99]).mean()
 summary['max_lost'] = max(network_losts)
 summary['chance_of_lost'] = summary['avg_lost'] * 1.0 / (len(global_hist))
 summary['avg_new_var_delay'] = summary['experiment_length'] * 1.0 / summary['num_of_globals']

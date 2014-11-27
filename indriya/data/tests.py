@@ -118,6 +118,9 @@ def data_sync(root_dir, pwd, title):
 
 		summary["avg_delay"] = data["avg_delay"]
 		summary["avg_lost"] = data["avg_lost"]
+		summary["avg_lost_75"] = data["avg_lost_75"]
+		summary["avg_lost_95"] = data["avg_lost_95"]
+		summary["avg_lost_99"] = data["avg_lost_99"]
 		summary["avg_new_var_delay"] = data["avg_new_var_delay"]
 		summary["chance_of_lost"] = data["chance_of_lost"]
 		summary["experiment_length"] = data["experiment_length"]
