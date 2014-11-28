@@ -33,9 +33,7 @@ global_records = []
 
 def add_node(mote_id):
 	new_node = {}
-	new_node['vars'] = {}
 	new_node['hist'] = []
-	new_node['delay'] = []
 	nodes[mote_id] = new_node
 
 experiment_lenght = 0
@@ -135,12 +133,17 @@ for line in f.readlines():
 network_delays = []
 network_losts = []
 network_overwrote = []
+network_update_losts = 0
+network_update_overwrite = 0
 
 num_of_nodes = len(nodes.keys())
 
 for r in global_records:
 	r["receivers"] = sorted(r["receivers"], key=lambda k: k["mote_id"])
 	r["receivers_delay"] = sorted([x - r["timestamp"] for x in r["receivers_timestamps"]])
+	if len( r["receivers_delay"] ) == 0:
+		continue
+
 	delays = np.array( r["receivers_delay"] )
 	r["delay_avg"] = delays.mean()
 	r["delay_std"] = delays.std()
@@ -149,9 +152,12 @@ for r in global_records:
 	if lost == (num_of_nodes - 1):
 		r["receivers_miss"] = 0 
 		r["overwrote"] = lost
+		network_update_overwrite += 1
 	else:
 		r["receivers_miss"] = lost
 		r["overwrote"] = 0
+		if lost > 0:
+			network_update_losts += 1
 
 #	print "%d - %d" % (num_of_nodes, len(r["receivers_delay"]) )
 #	print "Data %d \t Var %d \t Mote %d \t Timestamp %d\t Missed %d" % (r["data"],
@@ -184,19 +190,30 @@ summary['all'] = nodes
 summary['num_of_nodes'] = len(nodes.keys())
 summary['num_of_globals'] = len(global_records)
 summary['experiment_length'] = experiment_lenght
+summary['network_update_overwrite'] = network_update_overwrite
+summary['network_update_lost'] = network_update_losts
 summary['min_delay'] = min(network_delays)
 summary['avg_delay'] = np.array(network_delays).mean()
 summary['avg_delay_75'] = np.array(network_delays[:len_delay_75]).mean()
 summary['avg_delay_95'] = np.array(network_delays[:len_delay_95]).mean()
 summary['avg_delay_99'] = np.array(network_delays[:len_delay_99]).mean()
+summary['median_delay'] = network_delays[len_delay_99/2 + 1]
 summary['max_delay'] = max(network_delays)
 summary['min_lost'] = min(network_losts)
+summary['sum_lost'] = np.array(network_losts).sum()
 summary['avg_lost'] = np.array(network_losts).mean()
 summary['avg_lost_95'] = np.array(network_losts[:len_lost_95]).mean()
 summary['avg_lost_99'] = np.array(network_losts[:len_lost_99]).mean()
 summary['max_lost'] = max(network_losts)
-summary['chance_of_lost'] = summary['avg_lost'] * 1.0 / summary['num_of_globals']
+summary['sum_overwrote'] =  np.array(network_overwrote).sum()
+summary['avg_overwrote'] =  np.array(network_overwrote).mean()
+#summary['chance_of_lost'] = summary['avg_lost'] * 1.0 / summary['num_of_globals']
+#summary['chance_of_overwrite'] = summary['sum_overwrote'] * 1.0 / summary['num_of_globals']
 summary['avg_new_var_delay'] = summary['experiment_length'] * 1.0 / summary['num_of_globals']
+summary['chance_of_mote_lost'] = summary['avg_lost']
+summary['chance_of_mote_overwrite'] = summary['avg_overwrote']
+summary['chance_of_lost'] = network_update_losts * 1.0 / len(global_records)
+summary['chance_of_overwrite'] = network_update_overwrite * 1.0 / len(global_records)
 
 # save as json
 with open(sys.argv[2], 'wb') as fp:
