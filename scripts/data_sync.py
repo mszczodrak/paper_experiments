@@ -158,13 +158,6 @@ for r in global_records:
 	network_losts.append( r["receivers_miss"] )
 
 
-
-
-
-#for mote in nodes.keys():
-#	network_losts.append( nodes[mote_id]['lost_count'] )
-#	network_delays += nodes[mote_id]['delay']
-
 network_delays = sorted(network_delays)
 network_losts = sorted(network_losts)
 
