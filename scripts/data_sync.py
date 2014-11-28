@@ -71,7 +71,6 @@ def add_to_receivers(data, var_id, mote_id, timestamp):
 		if global_records[i]["data"] == data and global_records[i]["var_id"] == var_id:
 			for rec_record in global_records[i]["receivers"]:
 				if rec_record["mote_id"] == mote_id:
-#					print "Duplicate "
 					return
 
 			global_records[i]["receivers"].append(new_receiver)
@@ -135,6 +134,7 @@ for line in f.readlines():
 
 network_delays = []
 network_losts = []
+network_overwrote = []
 
 num_of_nodes = len(nodes.keys())
 
@@ -145,7 +145,13 @@ for r in global_records:
 	r["delay_avg"] = delays.mean()
 	r["delay_std"] = delays.std()
 	r["delay_max"] = delays.max()
-	r["receivers_miss"] = num_of_nodes - len(r["receivers_delay"])
+	lost = num_of_nodes - len(r["receivers_delay"])
+	if lost == (num_of_nodes - 1):
+		r["receivers_miss"] = 0 
+		r["overwrote"] = lost
+	else:
+		r["receivers_miss"] = lost
+		r["overwrote"] = 0
 
 #	print "%d - %d" % (num_of_nodes, len(r["receivers_delay"]) )
 #	print "Data %d \t Var %d \t Mote %d \t Timestamp %d\t Missed %d" % (r["data"],
@@ -156,6 +162,7 @@ for r in global_records:
 
 	network_delays +=  r["receivers_delay"] 
 	network_losts.append( r["receivers_miss"] )
+	network_overwrote.append( r["overwrote"] )
 
 
 network_delays = sorted(network_delays)
