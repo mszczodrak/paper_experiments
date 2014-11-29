@@ -1,4 +1,4 @@
-uint16_t event_src = 20
+uint16_t event_src = 10
 uint16_t all_motes = 0xFFFF
 uint32_t event_marker = 0
 
@@ -11,7 +11,7 @@ process system_control ! {
 
 process booting { nullApp() nullNet() *cc2420(26, 31, 0, 100, 1) }
 
-event installed { timerMinuteE(15, all_motes)
+event installed { timerMinuteE(10, all_motes)
         nullNet()
         nullAM()
 }
