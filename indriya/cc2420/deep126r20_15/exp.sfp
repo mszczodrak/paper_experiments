@@ -19,7 +19,7 @@ process system_control ! {
 process booting { nullApp() nullNet() *cc2420(26, 31, 0, 100, 1) }
 
 process count {
-        counter(1400, 1, src_node, dest_node, 0, event_track)
+        counter(1200, 1, src_node, dest_node, 0, event_track)
         ctp(dest_node)
         *cc2420(radio_channel, radio_tx_power, 0, 100, 1)
         # channel, power, sleepInterval, sleepDelay, autoAck
@@ -32,7 +32,7 @@ event installed { timerMinuteE(15, event_src)
         nullAM()
 }
 
-event time_to_sleep { timerSecondE(200, dest_node, event_marker)
+event time_to_sleep { timerSecondE(320, dest_node, event_marker)
         nullNet()
         nullAM()
 }
