@@ -23,6 +23,8 @@ testbed_conf_module = sys.argv[3].split("/")[-1].split(".")[0]
 path_to_testbed_conf_module = "/".join(sys.argv[3].split("/")[:-1])
 sys.path.append(path_to_testbed_conf_module)
 
+nodes = {}
+
 try:
 	testbed_conf = __import__(testbed_conf_module)
 except:
@@ -60,6 +62,9 @@ for line in f.readlines():
 		print line
 		continue
 
+	if mote_id not in nodes.keys():
+		nodes[mote_id] = {}
+
 	if dbg == DBGS_SIGNAL_FINISH_PERIOD:
 		if len(stop_delays[-1]["data"]) > 0  and \
 			timestamp - stop_delays[-1]["data"][-1] > 3:
@@ -68,6 +73,7 @@ for line in f.readlines():
 		stop_delays[-1]["data"].append(timestamp)	
 		stop_delays[-1]["motes"].append(mote_id)
 
+number_of_motes = len(nodes.keys())
 results = {}
 results["delays"] = []
 
@@ -79,7 +85,7 @@ for i in range(len(stop_delays)):
 	stop_delays[i]["last"] = last
 	stop_delays[i]["delay"] = last - first
 	if stop_delays[i]["delay"] < 1:
-		print "%d (%d)  %.3f - %.3f = %.3f" % (i, num, last, first, stop_delays[i]["delay"])
+		print "%d (%d, %02.2f)  %.3f - %.3f = %.3f" % (i, num, num * 100.0 / number_of_motes,  last, first, stop_delays[i]["delay"])
 		results["delays"].append(stop_delays[i]["delay"])
 
 
