@@ -36,6 +36,10 @@ data_sync:
 sync_delay:
 	for d in $(SYNC); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
+eed_sync:
+	for d in $(EED); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+
 clean: 
 	for d in $(DIRS); do (cd $$d; $(MAKE) clean; cd ..); done
 
