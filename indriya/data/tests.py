@@ -203,3 +203,50 @@ def sync_delay(root_dir, pwd, title):
 
 
 
+
+
+def eed_sync(root_dir, pwd, title):
+	sync_data = []
+
+	for i in os.listdir(root_dir):
+		if not i.startswith("eed_100s"):
+			continue
+		full_path = "%s/%s" % (root_dir, i)
+
+		summary = {}
+	
+		with open("%s/EED" % (full_path), "r") as fp:
+			summary["EED"] = int(fp.read().rstrip())
+		
+		with open("%s/LPL" % (full_path), "r") as fp:
+			summary["LPL"] = int(fp.read().rstrip())
+	
+		summary["NUMBER"] = "-1"
+
+		for f in os.listdir(full_path):
+			if f.endswith(".zip"):
+				summary["NUMBER"] = int(f.split("-")[1].split(".")[0])
+				break
+
+		try:	
+			with open("%s/summary_sdf.json" % (full_path), "r") as fp:	
+				content = fp.read()
+				data = yaml.load(content)
+		except:
+			print "Error: missing %s\n" % ("%s/summary_sdf.json" % (full_path))
+			continue
+			#sys.exit(1)
+
+		summary["avg_delay"] = data["avg_delay"]
+		summary["max_delay"] = data["max_delay"]
+		summary["median_delay"] = data["median_delay"]
+		summary["min_delay"] = data["min_delay"]
+
+		sync_data.append(summary)
+
+	with open(title, 'wb') as fp:
+		json.dump(sync_data, fp, sort_keys=True, indent=4)
+
+
+
+
