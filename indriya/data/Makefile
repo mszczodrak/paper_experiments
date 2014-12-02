@@ -9,6 +9,7 @@ all:
 	python cc2420_ccl.py
 	python cc2420_data_sync.py
 	python cc2420_sync_delay.py
+	python cc2420_eed_sync.py
 
 
 clean:
