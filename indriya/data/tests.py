@@ -241,6 +241,7 @@ def eed_sync(root_dir, pwd, title):
 		summary["max_delay"] = data["max_delay"]
 		summary["median_delay"] = data["median_delay"]
 		summary["min_delay"] = data["min_delay"]
+		summary["avg_num_reconfs"] = data["avg_num_reconfs"]
 
 		sync_data.append(summary)
 
