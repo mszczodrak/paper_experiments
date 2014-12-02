@@ -29,6 +29,9 @@ lpl_tests:
 ones_tests:
 	for d in $(ONES); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
+eed_sync:
+	for d in $(EED); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
 
 
 clean: 
