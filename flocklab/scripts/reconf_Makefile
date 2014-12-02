@@ -37,7 +37,7 @@ SCRIPT12=../../scripts/sdf_trace.py
 SCRIPT12_SRC=gpiotracing_LED3_Network.json
 SCRIPT12_DATA=sdf_stats.json
 
-all: $(LOG_RESULT) $(SCRIPT9_DATA) $(SCRIPT10_DATA) $(SCRIPT2_DATA) $(SCRIPT12_DATA) $(SCRIPT6_DATA) # $(SCRIPT7_DATA)
+all: $(LOG_RESULT) $(SCRIPT9_DATA) $(SCRIPT10_DATA) $(SCRIPT2_DATA) $(SCRIPT12_DATA) #$(SCRIPT6_DATA) # $(SCRIPT7_DATA)
 
 $(LOG_RESULT): *.tar.gz
 	tar -zxvf *.tar.gz

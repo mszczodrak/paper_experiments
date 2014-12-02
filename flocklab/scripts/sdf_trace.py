@@ -43,10 +43,15 @@ def add_period():
 
 add_period()
 
+nodes = {}
+
 for trace in sdf:
 	timestamp = trace[0]
 	mote_id = trace[1]
 	status = trace[2]
+
+	if mote_id not in nodes.keys():
+		nodes[mote_id] = {}
 
 	if mote_id > testbed_conf.max_node_id:
 		continue
@@ -61,11 +66,16 @@ for trace in sdf:
 
 results = {}
 results["delays"] = []
+results["percentage_of_reconfs"] = []
+results["number_of_reconfs"] = []
+results["number_of_nodes"] = len(nodes.keys())
 
 for i in range(len(stop_delays)):
 	first = min(stop_delays[i]["data"])
 	last = max(stop_delays[i]["data"])
 	num = len(stop_delays[i]["data"])
+	results["number_of_reconfs"].append(num)	
+	results["percentage_of_reconfs"].append(num * 100.0 / results["number_of_nodes"])
 	stop_delays[i]["first"] = first
 	stop_delays[i]["last"] = last
 	stop_delays[i]["delay"] = last - first
@@ -76,6 +86,7 @@ results["min_delay"] = min(results["delays"])
 results["max_delay"] = max(results["delays"])
 results["avg_delay"] = sum(results["delays"]) * 1.0 / len(results["delays"])
 results["median_delay"] = sorted(results["delays"])[len(results["delays"]) / 2]
+results["avg_num_reconfs"] = sum(results["percentage_of_reconfs"]) * 1.0 / len(results["percentage_of_reconfs"])
 results["stop_delays"] = stop_delays
 
 # save as json
@@ -87,10 +98,13 @@ print "Min     %.4f" % (results["min_delay"])
 print "Average %.4f" % (results["avg_delay"])
 print "Median  %.4f" % (results["median_delay"])
 print "Max     %.4f" % (results["max_delay"])
+print "Reconf  %.4f" % (results["avg_num_reconfs"])
 print
 
 del results["delays"]
 del results["stop_delays"]
+del results["number_of_reconfs"]
+del results["percentage_of_reconfs"]
 
 # save as json
 with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
