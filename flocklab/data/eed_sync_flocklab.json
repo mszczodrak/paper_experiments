@@ -7,7 +7,8 @@
         "avg_num_reconfs": 43.46917450365726, 
         "max_delay": 2.5051181316375732, 
         "median_delay": 1.595184087753296, 
-        "min_delay": 0.0028150081634521484
+        "min_delay": 0.0028150081634521484, 
+        "testbed": "FlockLab"
     }, 
     {
         "EED": 500, 
@@ -17,7 +18,8 @@
         "avg_num_reconfs": 96.6562173458725, 
         "max_delay": 0.47917914390563965, 
         "median_delay": 0.24236321449279785, 
-        "min_delay": 0.0023920536041259766
+        "min_delay": 0.0023920536041259766, 
+        "testbed": "FlockLab"
     }, 
     {
         "EED": 2000, 
@@ -27,7 +29,8 @@
         "avg_num_reconfs": 97.44444444444443, 
         "max_delay": 1.5894639492034912, 
         "median_delay": 0.46993517875671387, 
-        "min_delay": 0.0021178722381591797
+        "min_delay": 0.0021178722381591797, 
+        "testbed": "FlockLab"
     }, 
     {
         "EED": 2000, 
@@ -37,7 +40,8 @@
         "avg_num_reconfs": 100.0, 
         "max_delay": 0.37607598304748535, 
         "median_delay": 0.0036661624908447266, 
-        "min_delay": 0.0016210079193115234
+        "min_delay": 0.0016210079193115234, 
+        "testbed": "FlockLab"
     }, 
     {
         "EED": 500, 
@@ -47,7 +51,8 @@
         "avg_num_reconfs": 70.34482758620689, 
         "max_delay": 1.0844650268554688, 
         "median_delay": 0.33120107650756836, 
-        "min_delay": 0.0031890869140625
+        "min_delay": 0.0031890869140625, 
+        "testbed": "FlockLab"
     }, 
     {
         "EED": 1000, 
@@ -57,7 +62,8 @@
         "avg_num_reconfs": 100.0, 
         "max_delay": 0.001744985580444336, 
         "median_delay": 0.001744985580444336, 
-        "min_delay": 0.001744985580444336
+        "min_delay": 0.001744985580444336, 
+        "testbed": "FlockLab"
     }, 
     {
         "EED": 1500, 
@@ -67,7 +73,8 @@
         "avg_num_reconfs": 99.04761904761905, 
         "max_delay": 0.3775291442871094, 
         "median_delay": 0.047994136810302734, 
-        "min_delay": 0.0024759769439697266
+        "min_delay": 0.0024759769439697266, 
+        "testbed": "FlockLab"
     }, 
     {
         "EED": 1300, 
@@ -77,6 +84,7 @@
         "avg_num_reconfs": 100.0, 
         "max_delay": 0.5091831684112549, 
         "median_delay": 0.048449039459228516, 
-        "min_delay": 0.002377033233642578
+        "min_delay": 0.002377033233642578, 
+        "testbed": "FlockLab"
     }
 ]

@@ -19,6 +19,6 @@ if len(sys.argv) != 1:
 channel = 26
 lpl = 0
 pwd = os.path.dirname(os.path.realpath(__file__))
-tests.eed_sync("../cc2420", pwd, "eed_sync_indriya.json")
+tests.eed_sync("../cc2420", pwd, "eed_sync_indriya.json", "Indriya")
 
 

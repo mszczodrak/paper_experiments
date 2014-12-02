@@ -205,7 +205,7 @@ def sync_delay(root_dir, pwd, title):
 
 
 
-def eed_sync(root_dir, pwd, title):
+def eed_sync(root_dir, pwd, title, testbed_name):
 	sync_data = []
 
 	for i in os.listdir(root_dir):
@@ -242,6 +242,7 @@ def eed_sync(root_dir, pwd, title):
 		summary["median_delay"] = data["median_delay"]
 		summary["min_delay"] = data["min_delay"]
 		summary["avg_num_reconfs"] = data["avg_num_reconfs"]
+		summary["testbed"] = testbed_name
 
 		sync_data.append(summary)
 
