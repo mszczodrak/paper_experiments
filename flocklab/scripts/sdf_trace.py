@@ -58,7 +58,7 @@ for trace in sdf:
 
 	if status == 1:
 		if len(stop_delays[-1]["data"]) > 0 and \
-			timestamp - stop_delays[-1]["data"][-1] > 4:
+			timestamp - stop_delays[-1]["data"][-1] > 10:
 			add_period()
 
 		stop_delays[-1]["data"].append(timestamp)
@@ -71,6 +71,8 @@ results["number_of_reconfs"] = []
 results["number_of_nodes"] = len(nodes.keys())
 
 for i in range(len(stop_delays)):
+	#stop_delays[i]["data"] = sorted(stop_delays[i]["data"])
+	#stop_delays[i]["data"] = stop_delays[i]["data"][5:-5]
 	first = min(stop_delays[i]["data"])
 	last = max(stop_delays[i]["data"])
 	num = len(stop_delays[i]["data"])
