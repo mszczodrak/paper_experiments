@@ -1,4 +1,4 @@
-uint8_t @radio_tx_power = 31     # in    [31, 27, 23, 19, 15, 11, 7, 3]
+uint8_t radio_tx_power = 31     # in    [31, 27, 23, 19, 15, 11, 7, 3]
                                 # for   [0, -1, -3, -5, -7, -10, -15, -25] dBm
 uint8_t radio_channel = 26      # in    [11-26]
 uint16_t dest_node = 11
@@ -8,27 +8,34 @@ uint16_t event_src = 0xFFFF
 
 uint16_t event_track = 0
 uint32_t event_marker = 0
-uint16_t ctp_etx
+uint16_t mote_etx = 0
+uint16_t @network_etx = 0
 
 process system_control ! {
         StateSync()
-	EED(80, 10, event_marker)
+	EED(50, 10, event_marker)
         cc2420(26, 31, 65534, 100, 1)
         # channel, power, lpl
 }
 
+process network_data_ctrl ! {
+	BEDS()
+	rebroadcast(5, 15, 20)
+	cc2420(radio_channel, radio_tx_power, 0, 100, 1)
+}
+
 process booting { nullApp() nullNet() *cc2420(26, 31, 0, 100, 1) }
 
-process count {
-        counter(10000, 1, src_node, dest_node)
-        ctp(dest_node, ctp_etx)
+process cloud_collect {
+        counter(180, 1024, src_node, dest_node)
+        ctp(dest_node, mote_etx)
         *cc2420(radio_channel, radio_tx_power, 0, 100, 1)
         # channel, power, sleepInterval, sleepDelay, autoAck
 }
 
 process empty { nullApp() nullNet() nullAM() }
 
-event installed { timerMinuteE(20, event_src)
+event installed { timerMinuteE(15, event_src)
         nullNet()
         nullAM()
 }
@@ -43,19 +50,25 @@ event time_to_work { timerMinuteE(10, event_src, event_marker)
         nullAM()
 }
 
+event lost_internet { networkMinE(mote_etx, network_etx, 10240, 300)
+	nullNet()
+	nullAM()
+}
+
+
 event finished_receiving { noActivityE(4000, dest_node, 0.9, event_track)
 	nullNet()
 	nullAM()
 }
 
 state delayed_network_start { booting }
-state action { count }
-state sleep { empty }
+state centralized { cloud_collect }
+state distributed { empty }
 
-#from delayed_network_start goto action when installed
-#from action goto sleep when time_to_sleep
+from delayed_network_start goto centralized when installed
+from centralized goto distributed when lost_internet
 #from action goto sleep when finished_receiving
 #from sleep goto action when time_to_work
 
-start action
+start delayed_network_start 
 
