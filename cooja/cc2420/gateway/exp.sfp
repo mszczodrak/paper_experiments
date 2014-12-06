@@ -18,11 +18,11 @@ process system_control ! {
         # channel, power, lpl
 }
 
-process network_data_ctrl ! {
-	BEDS()
-	rebroadcast(5, 15, 20)
-	cc2420(radio_channel, radio_tx_power, 0, 100, 1)
-}
+#process network_data_ctrl ! {
+#	BEDS()
+#	rebroadcast(5, 15, 20)
+#	cc2420(radio_channel, radio_tx_power, 0, 100, 1)
+#}
 
 process booting { nullApp() nullNet() *cc2420(26, 31, 0, 100, 1) }
 
