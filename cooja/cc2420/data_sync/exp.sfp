@@ -13,8 +13,9 @@ uint16_t @v5 = 0
 
 process network_data_ctrl ! {
 	BEDS()
-	rebroadcast(5, 35, 10)
-	cc2420(radio_channel, radio_tx_power, 200, 100, 1)
+	nullNet()
+#	rebroadcast(5, 35, 10)
+	cc2420(radio_channel, radio_tx_power, 0, 100, 1)
 	# channel, power, lpl
 }
 
