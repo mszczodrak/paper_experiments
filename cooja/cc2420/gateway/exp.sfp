@@ -9,8 +9,7 @@ uint16_t event_src = 0xFFFF
 uint16_t event_track = 0
 uint32_t event_marker = 0
 uint16_t mote_etx = 0
-#uint16_t @network_etx = 0
-uint16_t sink_heartbeat = 0
+uint16_t @sink_heartbeat = 0
 
 process system_control ! {
         StateSync()
@@ -19,11 +18,11 @@ process system_control ! {
         # channel, power, lpl
 }
 
-#process network_data_ctrl ! {
-#	BEDS()
-#	rebroadcast(5, 15, 20)
-#	cc2420(radio_channel, radio_tx_power, 0, 100, 1)
-#}
+process network_data_ctrl ! {
+	BEDS()
+	rebroadcast(5, 15, 20)
+	cc2420(radio_channel, radio_tx_power, 0, 100, 1)
+}
 
 process booting { nullApp() nullNet() *cc2420(26, 31, 0, 100, 1) }
 
@@ -31,11 +30,10 @@ process cloud_collect {
         counter(180, 1024, src_node, dest_node, 1, event_track)
         ctp(dest_node)
         *cc2420(radio_channel, radio_tx_power, 0, 100, 1)
-        # channel, power, sleepInterval, sleepDelay, autoAck
 }
 
 process lower_rate {
-	down_sample(event_track, sink_heartbeat, 100)
+	down_sample(event_track, sink_heartbeat, 10)
 	nullNet()
 	nullAM()
 }
@@ -70,7 +68,7 @@ event time_to_work { timerMinuteE(10, event_src, event_marker)
 #}
 
 state delayed_network_start { booting }
-state centralized { cloud_collect }
+state centralized { cloud_collect lower_rate }
 state distributed { empty }
 
 from delayed_network_start goto centralized when installed
