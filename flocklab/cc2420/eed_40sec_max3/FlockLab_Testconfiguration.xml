@@ -3,8 +3,8 @@
 
 <testConf xmlns="http://www.flocklab.ethz.ch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flocklab.ethz.ch xml/flocklab.xsd">
 	<generalConf>
-		<name>eed_40sec_min3</name>
-		<description>eed_40sec_min3</description>
+		<name>eed_40sec_max3</name>
+		<description>eed_40sec_max3</description>
 		<scheduleAsap>
 			<durationSecs>2400</durationSecs>
 		</scheduleAsap>
@@ -14,7 +14,7 @@
 	<targetConf>
 		<obsIds>001 002 004 006 007 008 010 011 014 015 016 017 018 019 020 022 023 024 025 026 027 028 031 032 033 200 201 202 204</obsIds>
 		<voltage>3.3</voltage>
-		<dbImageId>7583</dbImageId>
+		<dbImageId>7600</dbImageId>
 	</targetConf>
 
 	<!-- GPIO Monitoring Service configuration -->

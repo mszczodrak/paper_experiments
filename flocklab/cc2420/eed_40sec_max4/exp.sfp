@@ -3,7 +3,7 @@ uint32_t event_marker = 0
 
 process system_control ! {
         StateSync()
-        EED(40, 10, event_marker)
+        EED(60, 10, event_marker)
         cc2420(26, 31, 0, 100, 1)
         # channel, power, lpl
 }
