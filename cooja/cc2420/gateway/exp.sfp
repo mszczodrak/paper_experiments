@@ -56,23 +56,17 @@ event time_to_work { timerMinuteE(10, event_src, event_marker)
         nullAM()
 }
 
-#event lost_internet { networkMinE(mote_etx, network_etx, 10240, 300)
-#	nullNet()
-#	nullAM()
-#}
-
-
-#event finished_receiving { noActivityE(4000, dest_node, 0.9, event_track)
-#	nullNet()
-#	nullAM()
-#}
+event lost_internet { noSignalE(src_node, sink_heartbeat, 180, 4096)
+	nullNet()
+	nullAM()
+}
 
 state delayed_network_start { booting }
 state centralized { cloud_collect lower_rate }
 state distributed { empty }
 
 from delayed_network_start goto centralized when installed
-#from centralized goto distributed when lost_internet
+from centralized goto distributed when lost_internet
 #from action goto sleep when finished_receiving
 #from sleep goto action when time_to_work
 
