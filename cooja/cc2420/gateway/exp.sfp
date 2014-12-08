@@ -9,7 +9,8 @@ uint16_t event_src = 0xFFFF
 uint16_t event_track = 0
 uint32_t event_marker = 0
 uint16_t mote_etx = 0
-uint16_t @network_etx = 0
+#uint16_t @network_etx = 0
+uint16_t sink_heartbeat = 0
 
 process system_control ! {
         StateSync()
@@ -27,11 +28,18 @@ process system_control ! {
 process booting { nullApp() nullNet() *cc2420(26, 31, 0, 100, 1) }
 
 process cloud_collect {
-        counter(180, 1024, src_node, dest_node)
-        ctp(dest_node, mote_etx)
+        counter(180, 1024, src_node, dest_node, 1, event_track)
+        ctp(dest_node)
         *cc2420(radio_channel, radio_tx_power, 0, 100, 1)
         # channel, power, sleepInterval, sleepDelay, autoAck
 }
+
+process lower_rate {
+	down_sample(event_track, sink_heartbeat, 100)
+	nullNet()
+	nullAM()
+}
+
 
 process empty { nullApp() nullNet() nullAM() }
 
@@ -50,23 +58,23 @@ event time_to_work { timerMinuteE(10, event_src, event_marker)
         nullAM()
 }
 
-event lost_internet { networkMinE(mote_etx, network_etx, 10240, 300)
-	nullNet()
-	nullAM()
-}
+#event lost_internet { networkMinE(mote_etx, network_etx, 10240, 300)
+#	nullNet()
+#	nullAM()
+#}
 
 
-event finished_receiving { noActivityE(4000, dest_node, 0.9, event_track)
-	nullNet()
-	nullAM()
-}
+#event finished_receiving { noActivityE(4000, dest_node, 0.9, event_track)
+#	nullNet()
+#	nullAM()
+#}
 
 state delayed_network_start { booting }
 state centralized { cloud_collect }
 state distributed { empty }
 
 from delayed_network_start goto centralized when installed
-from centralized goto distributed when lost_internet
+#from centralized goto distributed when lost_internet
 #from action goto sleep when finished_receiving
 #from sleep goto action when time_to_work
 
