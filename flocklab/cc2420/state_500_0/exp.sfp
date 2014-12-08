@@ -3,19 +3,19 @@ uint32_t event_marker = 0
 
 process system_control ! {
         StateSync()
-        EED(60, 10, event_marker)
-        cc2420(26, 31, 0, 100, 1)
+        EED(50, 10, event_marker)
+        cc2420(26, 31, 65534, 100, 1)
         # channel, power, lpl
 }
 
 process booting { nullApp() nullNet() *cc2420(26, 31, 0, 100, 1) }
 
-event installed { timerMinuteE(15, event_src)
+event installed { timerMinuteE(10, event_src)
         nullNet()
         nullAM()
 }
 
-event sync_time { timerSecondE(40, event_src, event_marker)
+event sync_time { timerMinuteE(30, event_src, event_marker)
         nullNet()
         nullAM()
 }
