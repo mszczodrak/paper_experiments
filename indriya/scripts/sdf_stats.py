@@ -18,7 +18,6 @@ if len(sys.argv) != 4:
 
 f = open(sys.argv[1], "r")
 
-
 testbed_conf_module = sys.argv[3].split("/")[-1].split(".")[0]
 path_to_testbed_conf_module = "/".join(sys.argv[3].split("/")[:-1])
 sys.path.append(path_to_testbed_conf_module)
@@ -72,6 +71,12 @@ for line in f.readlines():
 
 		stop_delays[-1]["data"].append(timestamp)	
 		stop_delays[-1]["motes"].append(mote_id)
+
+
+	if dbg == DBGS_NEW_LOCAL_PAYLOAD:
+		print timestamp
+
+
 
 number_of_motes = len(nodes.keys())
 results = {}
