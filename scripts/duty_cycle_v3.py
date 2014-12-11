@@ -87,7 +87,8 @@ all_percent_on_last_75 = []
 for mote_id in nodes.keys():
 	nodes[mote_id]['start_done_t'] = nodes[mote_id]['start_done_t'][4:]
 	nodes[mote_id]['stop_done_t'] = nodes[mote_id]['stop_done_t'][4:]
-
+	if nodes[mote_id]['stop_done_t'] == []:
+		continue
 	nodes[mote_id]['sum_on_time_ms'] = sum( nodes[mote_id]['start_done_t'] )
 	nodes[mote_id]['sum_off_time_ms'] = sum( nodes[mote_id]['stop_done_t'] )
 	nodes[mote_id]['sum_on_time_ms_last_75'] = sum( nodes[mote_id]['start_done_t'][(50 * len(nodes[mote_id]['start_done_t']) / 100):] )
