@@ -74,7 +74,8 @@ for line in f.readlines():
 
 
 	if dbg == DBGS_NEW_LOCAL_PAYLOAD:
-		print timestamp
+		#print timestamp
+		pass
 
 
 
