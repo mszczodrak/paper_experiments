@@ -72,7 +72,7 @@ results["number_of_nodes"] = len(nodes.keys())
 
 for i in range(len(stop_delays)):
 	#stop_delays[i]["data"] = sorted(stop_delays[i]["data"])
-	#stop_delays[i]["data"] = stop_delays[i]["data"][5:-5]
+#	stop_delays[i]["data"] = stop_delays[i]["data"][5:-5]
 	first = min(stop_delays[i]["data"])
 	last = max(stop_delays[i]["data"])
 	num = len(stop_delays[i]["data"])
@@ -84,6 +84,9 @@ for i in range(len(stop_delays)):
 	print "%d (%d)  %.3f - %.3f = %.3f" % (i, num, last, first, stop_delays[i]["delay"]) 
 	results["delays"].append(stop_delays[i]["delay"])
 
+
+results["delays"] = sorted(results["delays"])
+results["delays"] = results["delays"][1:-2]
 results["min_delay"] = min(results["delays"])
 results["max_delay"] = max(results["delays"])
 results["avg_delay"] = sum(results["delays"]) * 1.0 / len(results["delays"])
