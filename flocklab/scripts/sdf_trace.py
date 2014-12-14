@@ -58,7 +58,7 @@ for trace in sdf:
 
 	if status == 1:
 		if len(stop_delays[-1]["data"]) > 0 and \
-			timestamp - stop_delays[-1]["data"][-1] > 10:
+			timestamp - stop_delays[-1]["data"][-1] > 3:
 			add_period()
 
 		stop_delays[-1]["data"].append(timestamp)
