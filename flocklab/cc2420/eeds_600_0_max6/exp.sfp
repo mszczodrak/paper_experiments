@@ -3,8 +3,8 @@ uint32_t event_marker = 0
 
 process system_control ! {
         StateSync()
-        EED(50, 10, event_marker)
-        cc2420(26, 31, 0, 100, 1)
+        EED(60, 10, event_marker)
+        cc2420(26, 31, 65534, 100, 1)
         # channel, power, lpl
 }
 
@@ -15,7 +15,7 @@ event installed { timerMinuteE(10, event_src)
         nullAM()
 }
 
-event sync_time { timerSecondE(30, event_src, event_marker)
+event sync_time { timerMinuteE(30, event_src, event_marker)
         nullNet()
         nullAM()
 }
