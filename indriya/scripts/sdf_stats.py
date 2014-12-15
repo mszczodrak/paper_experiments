@@ -100,6 +100,10 @@ for i in range(len(stop_delays)):
 		results["delays"].append(stop_delays[i]["delay"])
 
 
+results["delays"] = sorted(results["delays"])
+if len(results["delays"]) > 20:
+	results["delays"] = results["delays"][2:-2]
+
 results["min_delay"] = min(results["delays"])
 results["max_delay"] = max(results["delays"])
 results["avg_delay"] = sum(results["delays"]) * 1.0 / len(results["delays"])
