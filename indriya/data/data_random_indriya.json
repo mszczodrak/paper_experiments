@@ -550,6 +550,28 @@
         "num_of_nodes": 85
     }, 
     {
+        "DELAY": 50, 
+        "LPL": 200, 
+        "NUM": 5, 
+        "NUMBER": 54345, 
+        "TEST_DELAY": 250000, 
+        "avg_delay": 0.40173857314521544, 
+        "avg_delay_75": 0.27985587973493814, 
+        "avg_delay_95": 0.36765711474794605, 
+        "avg_delay_99": 0.39309917281063905, 
+        "avg_lost": 0.32125, 
+        "avg_new_var_delay": 2.93207875, 
+        "chance_of_lost": 0.015, 
+        "chance_of_overwrite": 0.005, 
+        "experiment_length": 2345.663, 
+        "max_delay": 5.428999999999974, 
+        "max_lost": 73, 
+        "min_delay": 0.0, 
+        "min_lost": 0, 
+        "num_of_globals": 800, 
+        "num_of_nodes": 85
+    }, 
+    {
         "DELAY": 150, 
         "LPL": 0, 
         "NUM": 5, 
