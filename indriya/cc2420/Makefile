@@ -6,7 +6,7 @@ DEEP=`find -L ./deep* -prune`
 DEST=`find -L ./dest* -prune`
 LLL=`find -L ./lll* -prune`
 EED=`find -L ./eed* -prune`
-DATA=`find -L ./data_sync* -prune`
+DATA=`find -L ./data_* -prune`
 SYNC=`find -L ./sync* -prune`
 DIRS=$(CCLS) $(CFRS) $(RSSIS) $(ONES) $(DEEP) $(LLL) $(EED) $(DEST) $(DATA) $(SYNC)
 
@@ -30,7 +30,7 @@ lll_tests:
 ones_tests:
 	for d in $(ONES); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
-data_sync:
+data_random:
 	for d in $(DATA); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
 sync_delay:
