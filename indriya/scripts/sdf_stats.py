@@ -95,7 +95,7 @@ for i in range(len(stop_delays)):
 	stop_delays[i]["first"] = first
 	stop_delays[i]["last"] = last
 	stop_delays[i]["delay"] = last - first
-	if stop_delays[i]["delay"] < 1:
+	if stop_delays[i]["delay"] < 1 and num <= number_of_motes:
 		print "%d (%d, %02.2f)  %.3f - %.3f = %.3f" % (i, num, num * 100.0 / number_of_motes,  last, first, stop_delays[i]["delay"])
 		results["delays"].append(stop_delays[i]["delay"])
 
