@@ -133,6 +133,7 @@ for line in f.readlines():
 network_delays = []
 network_losts = []
 network_overwrote = []
+network_all_losts = []
 network_update_losts = 0
 network_update_overwrite = 0
 
@@ -149,6 +150,7 @@ for r in global_records:
 	r["delay_std"] = delays.std()
 	r["delay_max"] = delays.max()
 	lost = num_of_nodes - len(r["receivers_delay"])
+	r["all_losts"] = lost
 	if lost == (num_of_nodes - 1):
 		r["receivers_miss"] = 0 
 		r["overwrote"] = lost
@@ -168,11 +170,13 @@ for r in global_records:
 
 	network_delays +=  r["receivers_delay"] 
 	network_losts.append( r["receivers_miss"] )
+	network_all_losts.append( r["all_losts"] )
 	network_overwrote.append( r["overwrote"] )
 
 
 network_delays = sorted(network_delays)
 network_losts = sorted(network_losts)
+network_all_losts = sorted(network_all_losts)
 
 print network_losts
 
@@ -183,6 +187,10 @@ len_delay_99 = len(network_delays) * 99 / 100
 len_lost_75 = len(network_losts) * 75 / 100
 len_lost_95 = len(network_losts) * 95 / 100
 len_lost_99 = len(network_losts) * 99 / 100
+
+len_all_losts_75 = len(network_all_losts) * 75 / 100
+len_all_losts_95 = len(network_all_losts) * 95 / 100
+len_all_losts_99 = len(network_all_losts) * 99 / 100
 
 
 summary = {}
@@ -204,6 +212,10 @@ summary['sum_lost'] = np.array(network_losts).sum()
 summary['avg_lost'] = np.array(network_losts).mean()
 summary['avg_lost_95'] = np.array(network_losts[:len_lost_95]).mean()
 summary['avg_lost_99'] = np.array(network_losts[:len_lost_99]).mean()
+summary['avg_all_losts'] = np.array(network_all_losts).mean()
+summary['avg_all_losts_95'] = np.array(network_all_losts[:len_all_losts_95]).mean()
+summary['avg_all_losts_99'] = np.array(network_all_losts[:len_all_losts_99]).mean()
+summary['std_all_losts'] = np.array(network_all_losts).std()
 summary['max_lost'] = max(network_losts)
 summary['sum_overwrote'] =  np.array(network_overwrote).sum()
 summary['avg_overwrote'] =  np.array(network_overwrote).mean()

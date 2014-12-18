@@ -301,6 +301,9 @@ def data_random(root_dir, pwd, title):
 		summary["max_lost"] = data["max_lost"]
 		summary["min_delay"] = data["min_delay"]
 		summary["min_lost"] = data["min_lost"]
+		summary["avg_all_losts"] = data["avg_all_losts"]
+		summary["avg_all_losts_95"] = data["avg_all_losts_95"]
+		summary["avg_all_losts_99"] = data["avg_all_losts_99"]
 		summary["num_of_globals"] = data["num_of_globals"]
 		summary["num_of_nodes"] = data["num_of_nodes"]
 
