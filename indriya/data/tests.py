@@ -272,6 +272,9 @@ def data_random(root_dir, pwd, title):
 		with open("%s/LPL" % (full_path), "r") as fp:
 			summary["LPL"] = int(fp.read().rstrip())
 	
+		with open("%s/RETRANSMIT" % (full_path), "r") as fp:
+			summary["RETRANSMIT"] = int(fp.read().rstrip())
+	
 		summary["NUMBER"] = "-1"
 
 		for f in os.listdir(full_path):
