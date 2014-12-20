@@ -224,8 +224,8 @@ summary['avg_overwrote'] =  np.array(network_overwrote).mean()
 summary['avg_new_var_delay'] = summary['experiment_length'] * 1.0 / summary['num_of_globals']
 summary['chance_of_mote_lost'] = summary['avg_lost']
 summary['chance_of_mote_overwrite'] = summary['avg_overwrote']
-summary['chance_of_lost'] = network_update_losts * 100.0 / len(global_records)
-summary['chance_of_overwrite'] = network_update_overwrite * 100.0 / len(global_records)
+summary['chance_of_lost'] = network_update_losts * 1.0 / len(global_records)
+summary['chance_of_overwrite'] = network_update_overwrite * 1.0 / len(global_records)
 
 # save as json
 with open(sys.argv[2], 'wb') as fp:
