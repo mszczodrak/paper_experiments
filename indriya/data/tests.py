@@ -336,6 +336,9 @@ def data_from(root_dir, pwd, title):
 		with open("%s/FROM" % (full_path), "r") as fp:
 			summary["FROM"] = int(fp.read().rstrip())
 		
+		with open("%s/LOCATION" % (full_path), "r") as fp:
+			summary["LOCATION"] = int(fp.read().rstrip())
+		
 		with open("%s/DELAY" % (full_path), "r") as fp:
 			summary["DELAY"] = int(fp.read().rstrip())
 	
