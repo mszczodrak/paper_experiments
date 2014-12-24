@@ -133,3 +133,4 @@ with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
 	json.dump(results, fp, sort_keys=True, indent=4)
 
 
+print sorted(nodes.keys())
