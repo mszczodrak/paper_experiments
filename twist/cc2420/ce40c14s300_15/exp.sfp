@@ -27,7 +27,7 @@ process count {
 
 process empty { nullApp() nullNet() nullAM() }
 
-event installed { timerMinuteE(15, event_src)
+event installed { timerMinuteE(7, event_src)
         nullNet()
         nullAM()
 }
