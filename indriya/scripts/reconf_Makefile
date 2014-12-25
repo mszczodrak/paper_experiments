@@ -15,7 +15,7 @@ TESTBED_CONF=../../data/indriya_conf.py
 SCRIPT9=$(FENNEC_FOX_LIB)/support/sdk/python/translate_results.py
 SCRIPT9_DATA=str_$(LOG_RESULT)
 
-SCRIPT21=../../scripts/sdf_stats.py
+SCRIPT21=../../../scripts/sdf_stats.py
 SCRIPT21_DATA=sdf.json
 
 SCRIPT2=../../../scripts/duty_cycle_v3.py

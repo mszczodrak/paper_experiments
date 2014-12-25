@@ -8,31 +8,26 @@ TESTBED_CONF=../../data/twist_conf.py
 ROOT_FILE=ROOT
 ROOT=$(shell cat ROOT)
 
-SCRIPT1=../../../scripts/counter_receiver_stats.py
-SCRIPT1_DATA=counter.json
-SCRIPT2=../../../scripts/duty_cycle_v2.py
-SCRIPT2_DATA=duty_cycle.json
-SCRIPT3=../../../scripts/duty_cycle_analyze.py
-SCRIPT3_DATA=duty_cycle_analyze.json
 
-SCRIPT4=../../../scripts/state_reconf.py
-SCRIPT4_DATA=state_reconf.json
-SCRIPT5=../../../scripts/counter_collect_delay.py
-SCRIPT5_DATA=collect_delay.json
 
 SCRIPT9=$(FENNEC_FOX_LIB)/support/sdk/python/translate_results.py
 SCRIPT9_DATA=str_$(LOG_RESULT)
 
-all: $(SRC_LOG) $(LOG_RESULT) $(SCRIPT2_DATA) $(SCRIPT3_DATA) $(SCRIPT4_DATA) $(SCRIPT9_DATA)
+SCRIPT21=../../../scripts/sdf_stats.py
+SCRIPT21_DATA=sdf.json
+
+SCRIPT2=../../../scripts/duty_cycle_v3.py
+SCRIPT2_DATA=duty_cycle.json
+SCRIPT3=../../../scripts/duty_cycle_analyze.py
+SCRIPT3_DATA=duty_cycle_analyze.json
+
+all: $(LOG_RESULT) $(SCRIPT9_DATA) $(SCRIPT21_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA)
 
 $(SRC_LOG): *.txt.gz
-	zcat *.txt.gz > $(SRC_LOG)
+	-zcat *.txt.gz > $(SRC_LOG)
 
 $(LOG_RESULT): $(SRC_LOG)
 	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_twist.py $(SRC_LOG) > $(LOG_RESULT)
-
-$(SCRIPT1_DATA): $(LOG_RESULT) $(TESTBED_CONF)
-	$(SCRIPT1) $(LOG_RESULT) $(SCRIPT1_DATA) $(TESTBED_CONF)
 
 $(SCRIPT2_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
 	$(SCRIPT2) $(LOG_RESULT) $(SCRIPT2_DATA) $(TESTBED_CONF) $(ROOT)
@@ -40,25 +35,18 @@ $(SCRIPT2_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
 $(SCRIPT3_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
 	$(SCRIPT3) $(LOG_RESULT) $(SCRIPT3_DATA) $(TESTBED_CONF) $(ROOT)
 
-$(SCRIPT4_DATA): $(LOG_RESULT) $(TESTBED_CONF)
-	$(SCRIPT4) $(LOG_RESULT) $(SCRIPT4_DATA) $(TESTBED_CONF)
-
-$(SCRIPT5_DATA): $(LOG_RESULT) $(TESTBED_CONF)
-	$(SCRIPT5) $(LOG_RESULT) $(SCRIPT5_DATA) $(TESTBED_CONF)
-
 $(SCRIPT9_DATA): $(LOG_RESULT)
 	$(SCRIPT9) $(LOG_RESULT) > $(SCRIPT9_DATA)
 
+$(SCRIPT21_DATA): $(LOG_RESULT) $(TESTBED_CONF)
+	$(SCRIPT21) $(LOG_RESULT) $(SCRIPT21_DATA) $(TESTBED_CONF)
+
 clean:
-	if [ -f *.dat ]; then rm *dat; fi
-	if [ -f *summary ]; then rm -rf *summary; fi
-	if [ -f *LOG ]; then rm -rf *LOG; fi
+	if [ -f $(SRC_LOG) ]; then rm $(SRC_LOG); fi
 	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
-	if [ -f $(SCRIPT1_DATA) ]; then rm $(SCRIPT1_DATA); fi
-	if [ -f $(SCRIPT2_DATA) ]; then rm $(SCRIPT2_DATA); fi
-	if [ -f $(SCRIPT3_DATA) ]; then rm $(SCRIPT3_DATA); fi
-	if [ -f $(SCRIPT4_DATA) ]; then rm $(SCRIPT4_DATA); fi
-	if [ -f $(SCRIPT5_DATA) ]; then rm $(SCRIPT5_DATA); fi
-	if [ -f $(SCRIPT9_DATA) ]; then rm $(SCRIPT9_DATA); fi
+	rm -rf str_result.txt
+
+deep-clean: clean
 	rm -rf *.json
+	rm -rf *.txt
 

@@ -18,10 +18,11 @@ if len(sys.argv) != 4:
 
 f = open(sys.argv[1], "r")
 
-
 testbed_conf_module = sys.argv[3].split("/")[-1].split(".")[0]
 path_to_testbed_conf_module = "/".join(sys.argv[3].split("/")[:-1])
 sys.path.append(path_to_testbed_conf_module)
+
+nodes = {}
 
 try:
 	testbed_conf = __import__(testbed_conf_module)
@@ -30,13 +31,12 @@ except:
 	exit()
 
 stop_delays = []
-unsignaled = 0
 
 def add_period():
 	stop_delays.append({})
 	stop_delays[-1]["data"] = []
+	stop_delays[-1]["motes"] = []
 		
-
 add_period()
 
 for line in f.readlines():
@@ -61,32 +61,54 @@ for line in f.readlines():
 		print line
 		continue
 
+	if mote_id not in nodes.keys():
+		nodes[mote_id] = {}
+
 	if dbg == DBGS_SIGNAL_FINISH_PERIOD:
 		if len(stop_delays[-1]["data"]) > 0  and \
-			timestamp - stop_delays[-1]["data"][-1] > 2:
+			timestamp - stop_delays[-1]["data"][-1] > 1:
 			add_period()
 
 		stop_delays[-1]["data"].append(timestamp)	
-		continue
+		stop_delays[-1]["motes"].append(mote_id)
 
 
+	if dbg == DBGS_NEW_LOCAL_PAYLOAD:
+		#print timestamp
+		pass
+
+
+
+number_of_motes = len(nodes.keys())
 results = {}
 results["delays"] = []
+results["percentage_of_reconfs"] = []
+results["number_of_reconfs"] = []
+results["number_of_nodes"] = len(nodes.keys())
 
 for i in range(len(stop_delays)):
 	first = min(stop_delays[i]["data"])
 	last = max(stop_delays[i]["data"])
 	num = len(stop_delays[i]["data"])
+	results["number_of_reconfs"].append(num)
+	results["percentage_of_reconfs"].append(num * 100.0 / results["number_of_nodes"])
 	stop_delays[i]["first"] = first
 	stop_delays[i]["last"] = last
 	stop_delays[i]["delay"] = last - first
-	print "%d (%d)  %.3f - %.3f = %.3f" % (i, num, last, first, stop_delays[i]["delay"])
-	results["delays"].append(stop_delays[i]["delay"])
+	if stop_delays[i]["delay"] < 1 and num <= number_of_motes:
+		print "%d (%d, %02.2f)  %.3f - %.3f = %.3f" % (i, num, num * 100.0 / number_of_motes,  last, first, stop_delays[i]["delay"])
+		results["delays"].append(stop_delays[i]["delay"])
+
+
+results["delays"] = sorted(results["delays"])
+if len(results["delays"]) > 20:
+	results["delays"] = results["delays"][2:-2]
 
 results["min_delay"] = min(results["delays"])
 results["max_delay"] = max(results["delays"])
 results["avg_delay"] = sum(results["delays"]) * 1.0 / len(results["delays"])
 results["median_delay"] = sorted(results["delays"])[len(results["delays"]) / 2]
+results["avg_num_reconfs"] = sum(results["percentage_of_reconfs"]) * 1.0 / len(results["percentage_of_reconfs"])
 results["stop_delays"] = stop_delays
 
 # save as json
@@ -94,11 +116,21 @@ with open(sys.argv[2], 'wb') as fp:
 	json.dump(results, fp, sort_keys=True, indent=4)
 
 print "\nEstimate Dissemination End Time Final Results "
+print "Min     %.4f" % (results["min_delay"])
 print "Average %.4f" % (results["avg_delay"])
 print "Median  %.4f" % (results["median_delay"])
 print "Max     %.4f" % (results["max_delay"])
+print "Reconf  %.4f" % (results["avg_num_reconfs"])
 print
 
+del results["delays"]
+del results["stop_delays"]
+del results["number_of_reconfs"]
+del results["percentage_of_reconfs"]
+
+# save as json
+with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
+	json.dump(results, fp, sort_keys=True, indent=4)
 
 
-
+print sorted(nodes.keys())
