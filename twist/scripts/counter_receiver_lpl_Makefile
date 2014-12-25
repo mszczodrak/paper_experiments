@@ -19,12 +19,10 @@ SCRIPT2_DATA=duty_cycle.json
 SCRIPT3=../../../scripts/duty_cycle_analyze.py
 SCRIPT3_DATA=duty_cycle_analyze.json
 
-all: $(SRC_LOG) $(LOG_RESULT) $(SCRIPT1_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA)
+all: $(LOG_RESULT) $(SCRIPT1_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA)
 
-$(SRC_LOG): *.txt.gz
-	zcat *.txt.gz > $(SRC_LOG)
-
-$(LOG_RESULT): $(SRC_LOG)
+$(LOG_RESULT):
+	-zcat *.txt.gz > $(SRC_LOG)
 	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_twist.py $(SRC_LOG) > $(LOG_RESULT)
 
 $(SCRIPT1_DATA): $(LOG_RESULT) $(TESTBED_CONF)
@@ -39,12 +37,12 @@ $(SCRIPT3_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
 
 
 clean:
-	if [ -f *.txt ]; then rm *.txt; fi
 	if [ -f $(SRC_LOG) ]; then rm $(SRC_LOG); fi
 	if [ -f $(LOG_RESULT) ]; then rm $(LOG_RESULT); fi
-	if [ -f $(SCRIPT1_DATA) ]; then rm $(SCRIPT1_DATA); fi
-	if [ -f $(SCRIPT2_DATA) ]; then rm $(SCRIPT2_DATA); fi
-	if [ -f $(SCRIPT3_DATA) ]; then rm $(SCRIPT3_DATA); fi
+	rm -rf str_result.txt
+
+deep-clean: clean
 	rm -rf *.json
+	rm -rf *.txt
 
 

@@ -32,7 +32,7 @@ SCRIPT5_DATA=collect_delay.json
 SCRIPT9=$(FENNEC_FOX_LIB)/support/sdk/python/translate_results.py
 SCRIPT9_DATA=str_$(LOG_RESULT)
 
-SCRIPT21=../../scripts/sdf_stats.py
+SCRIPT21=../../../scripts/sdf_stats.py
 SCRIPT21_DATA=sdf.json
 
 all: $(LOG_RESULT) $(SCRIPT9_DATA) $(SCRIPT1_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA) $(SCRIPT4_DATA) $(SCRIPT5_DATA) $(SCRIPT21_DATA)
