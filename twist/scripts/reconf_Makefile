@@ -8,8 +8,6 @@ TESTBED_CONF=../../data/twist_conf.py
 ROOT_FILE=ROOT
 ROOT=$(shell cat ROOT)
 
-
-
 SCRIPT9=$(FENNEC_FOX_LIB)/support/sdk/python/translate_results.py
 SCRIPT9_DATA=str_$(LOG_RESULT)
 
@@ -23,10 +21,8 @@ SCRIPT3_DATA=duty_cycle_analyze.json
 
 all: $(LOG_RESULT) $(SCRIPT9_DATA) $(SCRIPT21_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA)
 
-$(SRC_LOG): *.txt.gz
+$(LOG_RESULT):
 	-zcat *.txt.gz > $(SRC_LOG)
-
-$(LOG_RESULT): $(SRC_LOG)
 	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_twist.py $(SRC_LOG) > $(LOG_RESULT)
 
 $(SCRIPT2_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
