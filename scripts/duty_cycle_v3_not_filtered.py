@@ -84,7 +84,7 @@ all_percent_on = []
 all_percent_on_last_75 = []
 
 # for each node sending to destination 
-for mote_id in nodes.keys():
+for mote_id in sorted(nodes.keys()):
 	nodes[mote_id]['start_done_t'] = nodes[mote_id]['start_done_t'][4:]
 	nodes[mote_id]['stop_done_t'] = nodes[mote_id]['stop_done_t'][4:]
 
@@ -92,6 +92,10 @@ for mote_id in nodes.keys():
 	nodes[mote_id]['sum_off_time_ms'] = sum( nodes[mote_id]['stop_done_t'] )
 	nodes[mote_id]['sum_on_time_ms_last_75'] = sum( nodes[mote_id]['start_done_t'][(50 * len(nodes[mote_id]['start_done_t']) / 100):] )
 	nodes[mote_id]['sum_off_time_ms_last_75'] = sum( nodes[mote_id]['stop_done_t'][(50 * len(nodes[mote_id]['stop_done_t']) / 100):] )
+
+	if nodes[mote_id]['sum_on_time_ms'] + nodes[mote_id]['sum_off_time_ms'] == 0:
+		print "Skip Node %d" % (mote_id)
+		continue
 
 	nodes[mote_id]['percent_on_time_ms'] = (100.0 * nodes[mote_id]['sum_on_time_ms']) / \
 		( nodes[mote_id]['sum_on_time_ms'] + nodes[mote_id]['sum_off_time_ms'] )
