@@ -82,6 +82,7 @@ if skip:
 
 all_percent_on = []
 all_percent_on_last_75 = []
+all_percent_on_first_25 = []
 
 # for each node sending to destination 
 for mote_id in sorted(nodes.keys()):
@@ -92,6 +93,8 @@ for mote_id in sorted(nodes.keys()):
 	nodes[mote_id]['sum_off_time_ms'] = sum( nodes[mote_id]['stop_done_t'] )
 	nodes[mote_id]['sum_on_time_ms_last_75'] = sum( nodes[mote_id]['start_done_t'][(50 * len(nodes[mote_id]['start_done_t']) / 100):] )
 	nodes[mote_id]['sum_off_time_ms_last_75'] = sum( nodes[mote_id]['stop_done_t'][(50 * len(nodes[mote_id]['stop_done_t']) / 100):] )
+	nodes[mote_id]['sum_on_time_ms_first_25'] = sum( nodes[mote_id]['start_done_t'][(50 * len(nodes[mote_id]['start_done_t']) / 100):] )
+	nodes[mote_id]['sum_off_time_ms_first_25'] = sum( nodes[mote_id]['stop_done_t'][(50 * len(nodes[mote_id]['stop_done_t']) / 100):] )
 
 	if nodes[mote_id]['sum_on_time_ms'] + nodes[mote_id]['sum_off_time_ms'] == 0:
 		print "Skip Node %d" % (mote_id)
@@ -101,13 +104,16 @@ for mote_id in sorted(nodes.keys()):
 		( nodes[mote_id]['sum_on_time_ms'] + nodes[mote_id]['sum_off_time_ms'] )
 	nodes[mote_id]['percent_on_time_ms_last_75'] = (100.0 * nodes[mote_id]['sum_on_time_ms_last_75']) / \
 		( nodes[mote_id]['sum_on_time_ms_last_75'] + nodes[mote_id]['sum_off_time_ms_last_75'] )
+	nodes[mote_id]['percent_on_time_ms_first_25'] = (100.0 * nodes[mote_id]['sum_on_time_ms_first_25']) / \
+		( nodes[mote_id]['sum_on_time_ms_first_25'] + nodes[mote_id]['sum_off_time_ms_first_25'] )
 
-	print "Node %d:  Time On %.3f     Last 75%% %.3f" % (mote_id, nodes[mote_id]['percent_on_time_ms'],
-				nodes[mote_id]['percent_on_time_ms_last_75'])
+	print "Node %d:  Time On %.3f     Last 75%% %.3f    First 25%% %.3f" % (mote_id, nodes[mote_id]['percent_on_time_ms'],
+				nodes[mote_id]['percent_on_time_ms_last_75'], nodes[mote_id]['percent_on_time_ms_first_25'])
 	#if mote_id != root and nodes[mote_id]['percent_on_time_ms'] < 10:
 	if mote_id != root:
 		all_percent_on.append(nodes[mote_id]['percent_on_time_ms'])
 		all_percent_on_last_75.append(nodes[mote_id]['percent_on_time_ms_last_75'])
+		all_percent_on_first_25.append(nodes[mote_id]['percent_on_time_ms_first_25'])
 
 
 data_summary = {}
@@ -125,11 +131,20 @@ data_summary['median_75'] = sorted(all_percent_on_last_75)[len(all_percent_on_la
 data_summary['avg_75'] = np.array(all_percent_on_last_75).mean()
 data_summary['std_75'] = np.array(all_percent_on_last_75).std()
 
+data_summary['all_25'] = all_percent_on_first_25
+data_summary['min_25'] = min(all_percent_on_first_25)
+data_summary['max_25'] = max(all_percent_on_first_25)
+data_summary['median_25'] = sorted(all_percent_on_first_25)[len(all_percent_on_first_25)/2]
+data_summary['avg_25'] = np.array(all_percent_on_first_25).mean()
+data_summary['std_25'] = np.array(all_percent_on_first_25).std()
+
 
 print "\n\nAll Data:  \tMedian: %.3f  Mean: %.3f  Std: %.3f \t\t Min: %.3f  Max: %.3f\n" % ( data_summary["median"],
 	data_summary['avg'], data_summary['std'], data_summary['min'], data_summary['max'])
-print "Last 75%%:   \tMedian: %.3f  Mean: %.3f  Std: %.3f \t\t Min: %.3f  Max: %.3f\n\n" % ( data_summary["median_75"],
+print "Last 75%%:   \tMedian: %.3f  Mean: %.3f  Std: %.3f \t\t Min: %.3f  Max: %.3f\n" % ( data_summary["median_75"],
 	data_summary['avg_75'], data_summary['std_75'], data_summary['min_75'], data_summary['max_75'])
+print "First 25%%:   \tMedian: %.3f  Mean: %.3f  Std: %.3f \t\t Min: %.3f  Max: %.3f\n\n" % ( data_summary["median_25"],
+	data_summary['avg_25'], data_summary['std_25'], data_summary['min_25'], data_summary['max_25'])
 
 # delete detailed logs from the memory
 for mote_id in nodes.keys():
