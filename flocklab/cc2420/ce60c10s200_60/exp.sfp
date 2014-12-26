@@ -37,7 +37,7 @@ event time_to_sleep { timerSecondE(200, dest_node, event_marker)
         nullAM()
 }
 
-event time_to_work { timerMinuteE(30, event_src, event_marker)
+event time_to_work { timerMinuteE(60, event_src, event_marker)
         nullNet()
         nullAM()
 }
