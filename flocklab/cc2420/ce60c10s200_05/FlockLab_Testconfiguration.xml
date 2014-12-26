@@ -6,20 +6,28 @@
 		<name>ce60c10s200_05</name>
 		<description>ce60c10s200_05</description>
 		<scheduleAsap>
-			<durationSecs>3000</durationSecs>
+			<durationSecs>6600</durationSecs>
 		</scheduleAsap>
 		<emailResults>yes</emailResults>
 	</generalConf>
 	
 	<targetConf>
-		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 032 033 200 201 202 204</obsIds>
+		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 032 033 200 201</obsIds>
 		<voltage>3.3</voltage>
-		<dbImageId>7908</dbImageId>
+		<dbImageId>7914</dbImageId>
 	</targetConf>
+
+	<!-- Serial Service configuration -->
+	<serialConf>
+		<obsIds>010</obsIds>
+		<baudrate>115200</baudrate>
+		<mode>pck</mode>
+		<remoteIp>128.59.22.169</remoteIp>
+	</serialConf>
 
 	<!-- GPIO Monitoring Service configuration -->
 	<gpioTracingConf>
-		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 032 033 200 201 202 204</obsIds>
+		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 032 033 200 201</obsIds>
 		<pinConf>
 			<pin>LED1</pin>
 			<edge>both</edge>
