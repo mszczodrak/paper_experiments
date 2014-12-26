@@ -66,7 +66,7 @@ for line in f.readlines():
 
 	if dbg == DBGS_SIGNAL_FINISH_PERIOD:
 		if len(stop_delays[-1]["data"]) > 0  and \
-			timestamp - stop_delays[-1]["data"][-1] > 2:
+			timestamp - stop_delays[-1]["data"][-1] > 1:
 			add_period()
 
 		stop_delays[-1]["data"].append(timestamp)	
