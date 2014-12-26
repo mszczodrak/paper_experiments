@@ -84,6 +84,11 @@ for led_id in LEDS.keys():
 	with open("%s_%s_%s.json" % (sys.argv[1].split(".")[0], LEDS[led_id]['id'], LEDS[led_id]['name']), 'wb') as fp:
 		json.dump(LEDS[led_id]['data'], fp, sort_keys=True, indent=4)
 
+	# save as json
+	with open("%s_%s_%s.txt" % (sys.argv[1].split(".")[0], LEDS[led_id]['id'], LEDS[led_id]['name']), 'wb') as fp:
+		for d in LEDS[led_id]['data']:
+			t = "\t".join(str(e) for e in d) + "\n"
+			fp.write(t)
 
 for mote_id in nodes.keys():
 	for led_id in LEDS.keys():
