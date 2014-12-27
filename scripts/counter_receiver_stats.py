@@ -105,8 +105,9 @@ all_send = []
 all_receive = []
 
 # adjust min and max for offsets
-max_seq_receive = max_seq_receive - 1
-min_seq_receive = min_seq_receive + 1
+if max_seq_receive > 3:
+	max_seq_receive = max_seq_receive - 1
+	min_seq_receive = min_seq_receive + 1
 
 all_send_counter = 0
 all_receive_counter = 0
@@ -121,6 +122,7 @@ for root in roots:
 	print "\nroot #%d" % (root)
 	sorted_keys = sorted(nodes[root]['receive_data'].keys())
 
+	print sorted_keys
 
 	for src_id in sorted_keys:
 		from_src_data = nodes[root]['receive_data'][src_id][min_seq_receive:max_seq_receive]
