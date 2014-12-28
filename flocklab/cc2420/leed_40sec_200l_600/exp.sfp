@@ -1,21 +1,22 @@
-uint16_t event_src = 0xFFFF
+uint16_t event_src = 10
+uint16_t all_motes = 0xFFFF
 uint32_t event_marker = 0
 
 process system_control ! {
         StateSync()
-        EED(1500, event_marker)
-        cc2420(26, 31, 500, 200, 1)
+        EED(600, event_marker)
+        cc2420(26, 31, 200, 200, 1)
         # channel, power, lpl
 }
 
 process booting { nullApp() nullNet() *cc2420(26, 31, 0, 100, 1) }
 
-event installed { timerMinuteE(10, event_src)
+event installed { timerMinuteE(10, all_motes)
         nullNet()
         nullAM()
 }
 
-event sync_time { timerSecondE(30, event_src, event_marker)
+event sync_time { timerSecondE(40, event_src, 0)
         nullNet()
         nullAM()
 }

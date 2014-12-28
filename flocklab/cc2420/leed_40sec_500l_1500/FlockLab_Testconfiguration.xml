@@ -3,8 +3,8 @@
 
 <testConf xmlns="http://www.flocklab.ethz.ch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flocklab.ethz.ch xml/flocklab.xsd">
 	<generalConf>
-		<name>leed_30sec_200l_600</name>
-		<description>leed_30sec_200l_600</description>
+		<name>leed_40sec_500l_1500</name>
+		<description>leed_40sec_500l_1500</description>
 		<scheduleAsap>
 			<durationSecs>2400</durationSecs>
 		</scheduleAsap>
@@ -12,14 +12,14 @@
 	</generalConf>
 	
 	<targetConf>
-		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 032 033 200 201 202</obsIds>
+		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 032 033 200 202</obsIds>
 		<voltage>3.3</voltage>
-		<dbImageId>7928</dbImageId>
+		<dbImageId>7930</dbImageId>
 	</targetConf>
 
 	<!-- GPIO Monitoring Service configuration -->
 	<gpioTracingConf>
-		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 032 033 200 201 202</obsIds>
+		<obsIds>001 002 004 006 007 008 010 011 013 014 015 016 017 018 019 020 022 023 024 025 026 027 028 032 033 200 202</obsIds>
 		<pinConf>
 			<pin>LED1</pin>
 			<edge>both</edge>
