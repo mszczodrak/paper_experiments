@@ -5,11 +5,12 @@ RSSIS=`find -L ./rssi* -prune`
 ONES=`find -L ./one* -prune`
 DEEP=`find -L ./deep* -prune`
 DEST=`find -L ./dest* -prune`
-LLL=`find -L ./lll* -prune`
+LEED=`find -L ./leed* -prune`
 LPL=`find -L ./lpl* -prune`
-EED=`find -L ./eed* -prune`
+EED=`find -L ./eeed* -prune`
+CE=`find -L ./ce* -prune`
 DATA=`find -L ./data* -prune`
-DIRS=$(CCLS) $(CFRS) $(RSSIS) $(ONES) $(DEEP) $(LLL) $(EED) $(DEST) $(DATA) $(EX) $(LPL)
+DIRS=$(CCLS) $(CFRS) $(RSSIS) $(ONES) $(DEEP) $(LEED) $(EED) $(DEST) $(DATA) $(EX) $(LPL) $(CE)
 
 
 MAKE=make
@@ -31,6 +32,9 @@ ones_tests:
 
 eed_sync:
 	for d in $(EED); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+ce:
+	for d in $(CE); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
 
 
