@@ -71,7 +71,8 @@ results["number_of_reconfs"] = []
 results["number_of_nodes"] = len(nodes.keys())
 
 for i in range(len(stop_delays)):
-	#stop_delays[i]["data"] = sorted(stop_delays[i]["data"])
+	if len(stop_delays[i]["data"]) > 15:
+		stop_delays[i]["data"] = sorted(stop_delays[i]["data"][1:-1])
 #	stop_delays[i]["data"] = stop_delays[i]["data"][5:-5]
 	first = min(stop_delays[i]["data"])
 	last = max(stop_delays[i]["data"])
