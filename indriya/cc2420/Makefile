@@ -8,7 +8,9 @@ LLL=`find -L ./lll* -prune`
 EED=`find -L ./eed* -prune`
 DATA=`find -L ./data_* -prune`
 SYNC=`find -L ./sync* -prune`
-DIRS=$(CCLS) $(CFRS) $(RSSIS) $(ONES) $(DEEP) $(LLL) $(EED) $(DEST) $(DATA) $(SYNC)
+CE=`find -L ./ce* -prune`
+V=`find -L ./v* -prune`
+DIRS=$(CCLS) $(CFRS) $(RSSIS) $(ONES) $(DEEP) $(LLL) $(EED) $(DEST) $(DATA) $(SYNC) $(CE) $(V) 
 
 MAKE=make
 
