@@ -288,6 +288,11 @@ def data_random(root_dir, pwd, title):
 				data = yaml.load(content)
 		except:
 			print "Error: missing %s\n" % ("%s/summary_data_sync.json" % (full_path))
+			summary["avg_delay"] = 0
+			summary["avg_delay_99"] = 0
+			summary["avg_all_losts"] = 0
+			summary["chance_update_wont_reach_everyone"] = 0
+			data_random.append(summary)
 			continue
 			#sys.exit(1)
 
