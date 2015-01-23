@@ -6,7 +6,6 @@ uint16_t @val = 0
 uint16_t @val_old = 0
 uint16_t mote1 = 1
 uint16_t mote2 = 10
-uint16_t mote3 = 0
 
 process network_data_ctrl ! {
 	BEDS()
@@ -15,7 +14,7 @@ process network_data_ctrl ! {
 }
 
 process test_data_merge {
-	TestDataMerge(100000, val, val_old, mote1, mote2, mote3)
+	TestDataMerge(100000, val, val_old, mote1, mote2)
 	nullNet() 
 	nullAM()
 }
