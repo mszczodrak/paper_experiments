@@ -1,1 +1,1 @@
-../../scripts/deep_Makefile
+../../scripts/merge_Makefile
