@@ -56,6 +56,9 @@ for line in f.readlines():
 
 	if mote_id not in nodes.keys():
 		nodes[mote_id] = {}
+		nodes[mote_id]['hist'] = []
+		nodes[mote_id]['var'] = 0
+		nodes[mote_id]['var_old'] = 0
 
 	if dbg == DBGS_SIGNAL_FINISH_PERIOD:
 		if len(stop_delays[-1]["data"]) > 0  and \
@@ -75,22 +78,37 @@ for line in f.readlines():
 
 
 	if dbg == DBGS_NEW_REMOTE_PAYLOAD:
+		nodes[mote_id]['hist'].append( [d1,d2] )
+		nodes[mote_id]['var'] = d1
+		nodes[mote_id]['var_old'] = d2
 		#print timestamp
 		pass
 
 
 # find start diff
 start_diff = -1
+merge_vars = []
 if len(starts) == 2:
 	s1 = starts[0]['timestamp']
 	s2 = starts[1]['timestamp']
 
-	if (s1 > s2):
+	if s1 > s2:
 		start_diff = s1 - s2
 	else:
 		start_diff = s2 - s1
 
+	d1 = starts[0]['num']
+	d2 = starts[1]['num']
+
+	if d1 > d2:
+		merge_vars = [d1, d2]
+	else:
+		merge_vars = [d2, d1]
+		
+
 print "Starting difference: %.3f sec" % (start_diff)
+print merge_vars
+
 
 sys.exit(0)
 
