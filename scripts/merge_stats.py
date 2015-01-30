@@ -57,8 +57,6 @@ for line in f.readlines():
 	if mote_id not in nodes.keys():
 		nodes[mote_id] = {}
 		nodes[mote_id]['hist'] = []
-		nodes[mote_id]['var'] = 0
-		nodes[mote_id]['var_old'] = 0
 		nodes[mote_id]['last'] = []
 
 	if dbg == DBGS_SIGNAL_FINISH_PERIOD:
@@ -80,8 +78,6 @@ for line in f.readlines():
 
 	if dbg == DBGS_NEW_REMOTE_PAYLOAD:
 		nodes[mote_id]['hist'].append( [timestamp, [d1,d2]] )
-		nodes[mote_id]['var'] = d1
-		nodes[mote_id]['var_old'] = d2
 		nodes[mote_id]['last'] = [d1, d2]
 		#print timestamp
 		pass
@@ -129,16 +125,21 @@ for mote in nodes.keys():
 
 print "Merge Stats: Match %d   Mixed %d   None %d" % (match, mixed, none)
 
-sys.exit(0)
-
-
-#del results["delays"]
-#del results["stop_delays"]
-#del results["number_of_reconfs"]
-#del results["percentage_of_reconfs"]
+results = {}
+results["mixed_merge"] = mixed
+results["none_merge"] = none
+results["match_merge"] = match
+results["num_nodes"] = len(nodes.keys())
+results["start_diff"] = start_diff
 
 # save as json
-#with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
-#	json.dump(results, fp, sort_keys=True, indent=4)
+with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
+	json.dump(results, fp, sort_keys=True, indent=4)
+
+results["nodes"] = nodes
+
+# save as json
+with open("%s" % (sys.argv[2]), 'wb') as fp:
+	json.dump(results, fp, sort_keys=True, indent=4)
 
 
