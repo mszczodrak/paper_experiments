@@ -59,6 +59,7 @@ for line in f.readlines():
 		nodes[mote_id]['hist'] = []
 		nodes[mote_id]['var'] = 0
 		nodes[mote_id]['var_old'] = 0
+		nodes[mote_id]['last'] = []
 
 	if dbg == DBGS_SIGNAL_FINISH_PERIOD:
 		if len(stop_delays[-1]["data"]) > 0  and \
@@ -78,9 +79,10 @@ for line in f.readlines():
 
 
 	if dbg == DBGS_NEW_REMOTE_PAYLOAD:
-		nodes[mote_id]['hist'].append( [d1,d2] )
+		nodes[mote_id]['hist'].append( [timestamp, [d1,d2]] )
 		nodes[mote_id]['var'] = d1
 		nodes[mote_id]['var_old'] = d2
+		nodes[mote_id]['last'] = [d1, d2]
 		#print timestamp
 		pass
 
@@ -109,62 +111,34 @@ if len(starts) == 2:
 print "Starting difference: %.3f sec" % (start_diff)
 print merge_vars
 
+none = 0
+mixed = 0
+match = 0
+
+for mote in nodes.keys():
+	n = nodes[mote]
+	if n['last'] == merge_vars:
+		match = match + 1
+		continue
+	
+	if n['last'] == []:
+		none = none + 1
+		continue
+
+	mixed = mixed + 1
+
+print "Merge Stats: Match %d   Mixed %d   None %d" % (match, mixed, none)
 
 sys.exit(0)
 
 
-number_of_motes = len(nodes.keys())
-results = {}
-results["delays"] = []
-results["percentage_of_reconfs"] = []
-results["number_of_reconfs"] = []
-results["number_of_nodes"] = len(nodes.keys())
-
-for i in range(len(stop_delays)):
-	first = min(stop_delays[i]["data"])
-	last = max(stop_delays[i]["data"])
-	num = len(stop_delays[i]["data"])
-	results["number_of_reconfs"].append(num)
-	results["percentage_of_reconfs"].append(num * 100.0 / results["number_of_nodes"])
-	stop_delays[i]["first"] = first
-	stop_delays[i]["last"] = last
-	stop_delays[i]["delay"] = last - first
-	#if stop_delays[i]["delay"] < 1 and num <= number_of_motes:
-	print "%d (%d, %02.2f)  %.3f - %.3f = %.3f" % (i, num, num * 100.0 / number_of_motes,  last, first, stop_delays[i]["delay"])
-	results["delays"].append(stop_delays[i]["delay"])
-
-
-results["delays"] = sorted(results["delays"])
-if len(results["delays"]) > 20:
-	results["delays"] = results["delays"][2:-2]
-
-results["min_delay"] = min(results["delays"])
-results["max_delay"] = max(results["delays"])
-results["avg_delay"] = sum(results["delays"]) * 1.0 / len(results["delays"])
-results["median_delay"] = sorted(results["delays"])[len(results["delays"]) / 2]
-results["avg_num_reconfs"] = sum(results["percentage_of_reconfs"]) * 1.0 / len(results["percentage_of_reconfs"])
-results["stop_delays"] = stop_delays
+#del results["delays"]
+#del results["stop_delays"]
+#del results["number_of_reconfs"]
+#del results["percentage_of_reconfs"]
 
 # save as json
-with open(sys.argv[2], 'wb') as fp:
-	json.dump(results, fp, sort_keys=True, indent=4)
-
-print "\nEstimate Dissemination End Time Final Results "
-print "Min     %.4f" % (results["min_delay"])
-print "Average %.4f" % (results["avg_delay"])
-print "Median  %.4f" % (results["median_delay"])
-print "Max     %.4f" % (results["max_delay"])
-print "Reconf  %.4f" % (results["avg_num_reconfs"])
-print
-
-del results["delays"]
-del results["stop_delays"]
-del results["number_of_reconfs"]
-del results["percentage_of_reconfs"]
-
-# save as json
-with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
-	json.dump(results, fp, sort_keys=True, indent=4)
+#with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
+#	json.dump(results, fp, sort_keys=True, indent=4)
 
 
-print sorted(nodes.keys())
