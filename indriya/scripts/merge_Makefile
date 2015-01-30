@@ -11,52 +11,24 @@ TESTBED_CONF=../../data/indriya_conf.py
 
 ROOT_FILE=ROOT
 ROOT=$(shell cat ROOT)
-SCRIPT1=../../../scripts/counter_test_stats.py
-#SCRIPT1=../../../scripts/counter_test_stats_uncut.py
-#SCRIPT1=../../../scripts/counter_receiver_stats.py
-SCRIPT1_DATA=counter.json
-SCRIPT2=../../../scripts/duty_cycle_v3_not_filtered.py
-#SCRIPT2=../../../scripts/duty_cycle_v3.py
-SCRIPT2_DATA=duty_cycle.json
-SCRIPT3=../../../scripts/duty_cycle_analyze.py
-SCRIPT3_DATA=duty_cycle_analyze.json
-SCRIPT4=../../../scripts/state_reconf.py
-SCRIPT4_DATA=state_reconf.json
-SCRIPT5=../../../scripts/counter_collect_delay.py
-SCRIPT5_DATA=collect_delay.json
 
 SCRIPT9=$(FENNEC_FOX_LIB)/support/sdk/python/translate_results.py
 SCRIPT9_DATA=str_$(LOG_RESULT)
 
-SCRIPT21=../../../scripts/sdf_stats.py
-SCRIPT21_DATA=sdf.json
+SCRIPT25=../../../scripts/merge_stats.py
+SCRIPT25_DATA=merge.json
 
-all: $(LOG_RESULT) $(SCRIPT9_DATA) #$(SCRIPT1_DATA) $(SCRIPT2_DATA) $(SCRIPT3_DATA) $(SCRIPT4_DATA) $(SCRIPT5_DATA) $(SCRIPT21_DATA)
+all: $(LOG_RESULT) $(SCRIPT9_DATA) $(SCRIPT25_DATA) 
 
 $(LOG_RESULT): *.zip
 	unzip -o *.zip
 	$(FENNEC_FOX_LIB)/support/sdk/python/parse_dbgs_indriya.py *.dat > $(LOG_RESULT)
 
-$(SCRIPT1_DATA): $(LOG_RESULT) $(TESTBED_CONF)
-	$(SCRIPT1) $(LOG_RESULT) $(SCRIPT1_DATA) $(TESTBED_CONF)
-
-$(SCRIPT2_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
-	$(SCRIPT2) $(LOG_RESULT) $(SCRIPT2_DATA) $(TESTBED_CONF) $(ROOT)
-
-$(SCRIPT3_DATA): $(LOG_RESULT) $(TESTBED_CONF) $(ROOT_FILE)
-	$(SCRIPT3) $(LOG_RESULT) $(SCRIPT3_DATA) $(TESTBED_CONF) $(ROOT)
-
-$(SCRIPT4_DATA): $(LOG_RESULT) $(TESTBED_CONF)
-	$(SCRIPT4) $(LOG_RESULT) $(SCRIPT4_DATA) $(TESTBED_CONF)
-
-$(SCRIPT5_DATA): $(LOG_RESULT) $(TESTBED_CONF)
-	$(SCRIPT5) $(LOG_RESULT) $(SCRIPT5_DATA) $(TESTBED_CONF)
-
 $(SCRIPT9_DATA): $(LOG_RESULT)
 	$(SCRIPT9) $(LOG_RESULT) > $(SCRIPT9_DATA)
 
-$(SCRIPT21_DATA): $(LOG_RESULT) $(TESTBED_CONF)
-	$(SCRIPT21) $(LOG_RESULT) $(SCRIPT21_DATA) $(TESTBED_CONF)
+$(SCRIPT25_DATA): $(LOG_RESULT) $(TESTBED_CONF)
+	$(SCRIPT25) $(LOG_RESULT) $(SCRIPT25_DATA) $(TESTBED_CONF)
 
 clean:
 	if [ -f *.dat ]; then rm *dat; fi
