@@ -23,6 +23,7 @@ path_to_testbed_conf_module = "/".join(sys.argv[3].split("/")[:-1])
 sys.path.append(path_to_testbed_conf_module)
 
 nodes = {}
+starts = []
 
 try:
 	testbed_conf = __import__(testbed_conf_module)
@@ -30,14 +31,6 @@ except:
 	print "failed to import %s\n" % (testbed_conf_module)
 	exit()
 
-stop_delays = []
-
-def add_period():
-	stop_delays.append({})
-	stop_delays[-1]["data"] = []
-	stop_delays[-1]["motes"] = []
-		
-add_period()
 
 for line in f.readlines():
 	l = line.split()
@@ -74,9 +67,32 @@ for line in f.readlines():
 
 
 	if dbg == DBGS_NEW_LOCAL_PAYLOAD:
+		st = {}
+		st['timestamp']	= timestamp
+		st['src'] = mote_id
+		st['num'] = d2
+		starts.append( st )
+
+
+	if dbg == DBGS_NEW_REMOTE_PAYLOAD:
 		#print timestamp
 		pass
 
+
+# find start diff
+start_diff = -1
+if len(starts) == 2:
+	s1 = starts[0]['timestamp']
+	s2 = starts[1]['timestamp']
+
+	if (s1 > s2):
+		start_diff = s1 - s2
+	else:
+		start_diff = s2 - s1
+
+print "Starting difference: %.3f sec" % (start_diff)
+
+sys.exit(0)
 
 
 number_of_motes = len(nodes.keys())
