@@ -416,16 +416,17 @@ def data_merge(root_dir, pwd, title):
 				break
 
 		try:	
-			with open("%s/summary_merge.json" % (full_path), "r") as fp:	
+			with open("%s/merge.json" % (full_path), "r") as fp:	
 				content = fp.read()
 				data = yaml.load(content)
 		except:
-			print "Error: missing %s\n" % ("%s/summary_merge.json" % (full_path))
+			print "Error: missing %s\n" % ("%s/merge.json" % (full_path))
 			summary["match_merge"] = 0
 			summary["mixed_merge"] = 0
 			summary["none_merge"] = 0
 			summary["num_nodes"] = 0
 			summary["start_diff"] = 0
+			summary["nodes"] = {}
 			data_merge.append(summary)
 			continue
 
@@ -434,6 +435,7 @@ def data_merge(root_dir, pwd, title):
 		summary["none_merge"] = data["none_merge"]
 		summary["num_nodes"] = data["num_nodes"]
 		summary["start_diff"] = data["start_diff"]
+		summary["nodes"] = data["nodes"]
 		data_merge.append(summary)
 
 	with open(title, 'wb') as fp:
