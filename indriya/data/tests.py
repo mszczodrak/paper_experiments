@@ -76,8 +76,6 @@ def ccl(root_dir, pwd, title):
 		json.dump(ccl_data, fp, sort_keys=True, indent=4)
 
 
-
-
 def data_sync(root_dir, pwd, title):
 	sync_data = []
 
@@ -200,8 +198,6 @@ def sync_delay(root_dir, pwd, title):
 
 	with open(title, 'wb') as fp:
 		json.dump(sync_data, fp, sort_keys=True, indent=4)
-
-
 
 
 
@@ -400,6 +396,48 @@ def data_from(root_dir, pwd, title):
 	with open(title, 'wb') as fp:
 		json.dump(data_from, fp, sort_keys=True, indent=4)
 
+
+
+def data_merge(root_dir, pwd, title):
+	data_merge = []
+
+	for i in os.listdir(root_dir):
+		if not i.startswith("merge_"):
+			continue
+		full_path = "%s/%s" % (root_dir, i)
+
+		summary = {}
+		summary["NUMBER"] = "-1"
+		summary["test_name"] = i
+
+		for f in os.listdir(full_path):
+			if f.endswith(".zip"):
+				summary["NUMBER"] = int(f.split("-")[1].split(".")[0])
+				break
+
+		try:	
+			with open("%s/summary_data_merge.json" % (full_path), "r") as fp:	
+				content = fp.read()
+				data = yaml.load(content)
+		except:
+			print "Error: missing %s\n" % ("%s/summary_data_merge.json" % (full_path))
+			summary["match_merge"] = 0
+			summary["mixed_merge"] = 0
+			summary["none_merge"] = 0
+			summary["num_nodes"] = 0
+			summary["start_diff"] = 0
+			data_merge.append(summary)
+			continue
+
+		summary["match_merge"] = data["match_merge"]
+		summary["mixed_merge"] = data["mixed_merge"]
+		summary["none_merge"] = data["none_merge"]
+		summary["num_nodes"] = data["num_nodes"]
+		summary["start_diff"] = data["start_diff"]
+		data_merge.append(summary)
+
+	with open(title, 'wb') as fp:
+		json.dump(data_merge, fp, sort_keys=True, indent=4)
 
 
 
