@@ -121,6 +121,7 @@ for mote in nodes.keys():
 		none = none + 1
 		continue
 
+	print n["hist"]
 	mixed = mixed + 1
 
 print "Merge Stats: Match %d   Mixed %d   None %d" % (match, mixed, none)
