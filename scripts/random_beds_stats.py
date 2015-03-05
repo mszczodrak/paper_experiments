@@ -93,6 +93,7 @@ for line in f.readlines():
 		sequences[var_id].append(entry)
 		
 
+exp_offset = 0
 
 # find start diff
 start_diff = -1
@@ -103,9 +104,11 @@ if len(starts) == 2:
 	if s1 > s2:
 		start_diff = s1 - s2
 		total_time = timestamp - s2
+		exp_offset = s2
 	else:
 		start_diff = s2 - s1
 		total_time = timestamp - s1
+		exp_offset = s1
 
 	v1 = starts[0]['num']
 	v2 = starts[1]['num']
@@ -118,8 +121,14 @@ ends_lost = 0
 ends_with_v1 = 0
 ends_with_v2 = 0
 
+motes_sync_delays = []
+
 for mote in nodes.keys():
 	n = nodes[mote]
+
+	mote_delay = n["hist"][-1][0] - exp_offset
+	motes_sync_delays.append( mote_delay )
+
 	if n['last'] == v1:
 		ends_with_v1 = ends_with_v1 + 1
 		continue
@@ -139,6 +148,8 @@ print "Has value %d -> %d motes ( %.2f %%)" % (v2, ends_with_v2,
 print "Motes lost: %d ( %.2f %%)" % (ends_lost,
 			ends_lost * 100.0 / len(nodes))
 
+msd_array = np.array(motes_sync_delays)
+
 results = {}
 results["_values"] = [v1, v2]
 results["_motes_with_v1"] = ends_with_v1
@@ -151,6 +162,11 @@ results["_num_nodes"] = len(nodes.keys())
 results["_start_diff"] = start_diff
 results["_sequences"] = sequences
 results["_total_time"] = total_time
+results["all_motes_delays"] = motes_sync_delays
+results["_all_motes_delays_max"] = msd_array.max()
+results["_all_motes_delays_min"] = msd_array.min()
+results["_all_motes_delays_mean"] = msd_array.mean()
+results["_all_motes_delays_std"] = msd_array.std()
 
 # save as json
 with open("summary_%s" % (sys.argv[2]), 'wb') as fp:

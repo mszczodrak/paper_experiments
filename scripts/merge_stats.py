@@ -77,11 +77,14 @@ for line in f.readlines():
 
 
 	if dbg == DBGS_NEW_REMOTE_PAYLOAD:
-		nodes[mote_id]['hist'].append( [timestamp, [d1,d2]] )
-		nodes[mote_id]['last'] = [d1, d2]
+		if nodes[mote_id]['last'] == [] or \
+			nodes[mote_id]['last'] != [d1,d2]:
+			nodes[mote_id]['hist'].append( [timestamp, [d1,d2]] )
+			nodes[mote_id]['last'] = [d1, d2]
 		#print timestamp
 		pass
 
+exp_offset = 0
 
 # find start diff
 start_diff = -1
@@ -92,8 +95,12 @@ if len(starts) == 2:
 
 	if s1 > s2:
 		start_diff = s1 - s2
+		total_time = timestamp - s2
+		exp_offset = s2
 	else:
 		start_diff = s2 - s1
+		total_time = timestamp - s1
+		exp_offset = s1
 
 	d1 = starts[0]['num']
 	d2 = starts[1]['num']
@@ -111,8 +118,14 @@ none = 0
 mixed = 0
 match = 0
 
+motes_sync_delays = []
+
 for mote in nodes.keys():
 	n = nodes[mote]
+
+	mote_delay = n["hist"][-1][0] - exp_offset
+	motes_sync_delays.append( mote_delay )
+
 	if n['last'] == merge_vars:
 		match = match + 1
 		continue
@@ -126,12 +139,21 @@ for mote in nodes.keys():
 
 print "Merge Stats: Match %d   Mixed %d   None %d" % (match, mixed, none)
 
+msd_array = np.array(motes_sync_delays)
+
 results = {}
 results["mixed_merge"] = mixed
 results["none_merge"] = none
 results["match_merge"] = match
 results["num_nodes"] = len(nodes.keys())
 results["start_diff"] = start_diff
+results["_total_time"] = total_time
+results["all_motes_delays"] = motes_sync_delays
+results["_all_motes_delays_max"] = msd_array.max()
+results["_all_motes_delays_min"] = msd_array.min()
+results["_all_motes_delays_mean"] = msd_array.mean()
+results["_all_motes_delays_std"] = msd_array.std()
+
 
 # save as json
 with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
