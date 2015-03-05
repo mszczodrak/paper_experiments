@@ -24,6 +24,7 @@ sys.path.append(path_to_testbed_conf_module)
 
 nodes = {}
 starts = []
+sequences = {}
 
 try:
 	testbed_conf = __import__(testbed_conf_module)
@@ -77,15 +78,25 @@ for line in f.readlines():
 
 
 	if dbg == DBGS_NEW_REMOTE_PAYLOAD:
-		nodes[mote_id]['hist'].append( [timestamp, [d1,d2]] )
-		nodes[mote_id]['last'] = [d1, d2]
-		#print timestamp
-		pass
+		nodes[mote_id]['hist'].append( [timestamp, d1] )
+		nodes[mote_id]['last'] = d1
+
+
+	if dbg == DBGS_SEQUENCE_INCREASE:
+		var_id = "var_%s" % (d1)
+		new_seq = d2
+
+		if var_id not in sequences.keys():
+			sequences[var_id] = []
+		entry = {}
+		entry['new_seq'] = new_seq
+		entry['timestamp'] = timestamp
+		sequences[var_id].append(entry)
+		
 
 
 # find start diff
 start_diff = -1
-merge_vars = []
 if len(starts) == 2:
 	s1 = starts[0]['timestamp']
 	s2 = starts[1]['timestamp']
@@ -95,43 +106,49 @@ if len(starts) == 2:
 	else:
 		start_diff = s2 - s1
 
-	d1 = starts[0]['num']
-	d2 = starts[1]['num']
+	v1 = starts[0]['num']
+	v2 = starts[1]['num']
 
-	if d1 > d2:
-		merge_vars = [d1, d2]
-	else:
-		merge_vars = [d2, d1]
-		
 
 print "Starting difference: %.3f sec" % (start_diff)
-print merge_vars
+print "Values: %d & %d" % (v1, v2)
 
-none = 0
-mixed = 0
-match = 0
+ends_lost = 0
+ends_with_v1 = 0
+ends_with_v2 = 0
 
 for mote in nodes.keys():
 	n = nodes[mote]
-	if n['last'] == merge_vars:
-		match = match + 1
+	if n['last'] == v1:
+		ends_with_v1 = ends_with_v1 + 1
 		continue
 	
-	if n['last'] == []:
-		none = none + 1
+	if n['last'] == v2:
+		ends_with_v2 = ends_with_v2 + 1
 		continue
 
 	print n["hist"]
-	mixed = mixed + 1
+	ends_lost = ends_lost + 1
 
-print "Merge Stats: Match %d   Mixed %d   None %d" % (match, mixed, none)
+print "Merge Stats"
+print "Has value %d -> %d motes ( %.2f %%)" % (v1, ends_with_v1, 
+			ends_with_v1 * 100.0 / len(nodes))
+print "Has value %d -> %d motes ( %.2f %%)" % (v2, ends_with_v2, 
+			ends_with_v2 * 100.0 / len(nodes))
+print "Motes lost: %d ( %.2f %%)" % (ends_lost,
+			ends_lost * 100.0 / len(nodes))
 
 results = {}
-results["mixed_merge"] = mixed
-results["none_merge"] = none
-results["match_merge"] = match
-results["num_nodes"] = len(nodes.keys())
-results["start_diff"] = start_diff
+results["_values"] = [v1, v2]
+results["_motes_with_v1"] = ends_with_v1
+results["_motes_with_v1_percentage"] = ends_with_v1 * 100.0 / len(nodes)
+results["_motes_with_v2"] = ends_with_v2
+results["_motes_with_v2_percentage"] = ends_with_v2 * 100.0 / len(nodes)
+results["_motes_lost"] = ends_lost
+results["_motes_lost_percentage"] = ends_lost * 100.0 / len(nodes)
+results["_num_nodes"] = len(nodes.keys())
+results["_start_diff"] = start_diff
+results["_sequences"] = sequences
 
 # save as json
 with open("summary_%s" % (sys.argv[2]), 'wb') as fp:
