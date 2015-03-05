@@ -32,7 +32,6 @@ except:
 	print "failed to import %s\n" % (testbed_conf_module)
 	exit()
 
-
 for line in f.readlines():
 	l = line.split()
 
@@ -103,8 +102,10 @@ if len(starts) == 2:
 
 	if s1 > s2:
 		start_diff = s1 - s2
+		total_time = timestamp - s2
 	else:
 		start_diff = s2 - s1
+		total_time = timestamp - s1
 
 	v1 = starts[0]['num']
 	v2 = starts[1]['num']
@@ -149,6 +150,7 @@ results["_motes_lost_percentage"] = ends_lost * 100.0 / len(nodes)
 results["_num_nodes"] = len(nodes.keys())
 results["_start_diff"] = start_diff
 results["_sequences"] = sequences
+results["_total_time"] = total_time
 
 # save as json
 with open("summary_%s" % (sys.argv[2]), 'wb') as fp:

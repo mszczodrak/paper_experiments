@@ -476,6 +476,7 @@ def data_random_beds(root_dir, pwd, title):
 			summary["_start_diff"] = 0
 			summary["_sequences"] = {}
 			summary["_values"] = []
+			summary["_total_time"] = 0
 			summary["nodes"] = {}
 			#data_merge.append(summary)
 			continue
@@ -490,6 +491,7 @@ def data_random_beds(root_dir, pwd, title):
 		summary["_sequences"] = data["_sequences"]
 		summary["_values"] = data["_values"]
 		summary["_start_diff"] = data["_start_diff"]
+		summary["_total_time"] = data["_total_time"]
 		summary["nodes"] = data["nodes"]
 		data_merge.append(summary)
 
