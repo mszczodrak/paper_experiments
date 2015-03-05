@@ -6,6 +6,8 @@ DEEP=`find -L ./deep* -prune`
 DEST=`find -L ./dest* -prune`
 LLL=`find -L ./lll* -prune`
 EED=`find -L ./eed* -prune`
+RANDOM=`find -L ./random_r* -prune`
+MERGE=`find -L ./merge_* -prune`
 DATA=`find -L ./data_* -prune`
 SYNC=`find -L ./sync* -prune`
 CE=`find -L ./ce* -prune`
@@ -41,6 +43,11 @@ sync_delay:
 eed_sync:
 	for d in $(EED); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
+random:
+	for d in $(RANDOM); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
+
+merge:
+	for d in $(MERGE); do (cd $$d; $(MAKE) deep-clean; $(MAKE); cd ..); done
 
 clean: 
 	for d in $(DIRS); do (cd $$d; $(MAKE) clean; cd ..); done

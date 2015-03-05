@@ -426,6 +426,12 @@ def data_merge(root_dir, pwd, title):
 			summary["none_merge"] = 0
 			summary["num_nodes"] = 0
 			summary["start_diff"] = 0
+			summary["_total_time"] = 0
+			summary["_all_motes_delays_max"] = 0
+			summary["_all_motes_delays_min"] = 0
+			summary["_all_motes_delays_mean"] = 0
+			summary["_all_motes_delays_std"] = 0
+			summary["all_motes_delays"] = []
 			summary["nodes"] = {}
 			data_merge.append(summary)
 			continue
@@ -435,6 +441,12 @@ def data_merge(root_dir, pwd, title):
 		summary["none_merge"] = data["none_merge"]
 		summary["num_nodes"] = data["num_nodes"]
 		summary["start_diff"] = data["start_diff"]
+		summary["_total_time"] = data["_total_time"]
+		summary["_all_motes_delays_max"] = data["_all_motes_delays_max"]
+		summary["_all_motes_delays_min"] = data["_all_motes_delays_min"]
+		summary["_all_motes_delays_mean"] = data["_all_motes_delays_mean"]
+		summary["_all_motes_delays_std"] = data["_all_motes_delays_std"]
+		summary["all_motes_delays"] = data["all_motes_delays"]
 		summary["nodes"] = data["nodes"]
 		data_merge.append(summary)
 
@@ -477,6 +489,11 @@ def data_random_beds(root_dir, pwd, title):
 			summary["_sequences"] = {}
 			summary["_values"] = []
 			summary["_total_time"] = 0
+			summary["_all_motes_delays_max"] = 0
+			summary["_all_motes_delays_min"] = 0
+			summary["_all_motes_delays_mean"] = 0
+			summary["_all_motes_delays_std"] = 0
+			summary["all_motes_delays"] = []
 			summary["nodes"] = {}
 			#data_merge.append(summary)
 			continue
@@ -492,6 +509,11 @@ def data_random_beds(root_dir, pwd, title):
 		summary["_values"] = data["_values"]
 		summary["_start_diff"] = data["_start_diff"]
 		summary["_total_time"] = data["_total_time"]
+		summary["_all_motes_delays_max"] = data["_all_motes_delays_max"]
+		summary["_all_motes_delays_min"] = data["_all_motes_delays_min"]
+		summary["_all_motes_delays_mean"] = data["_all_motes_delays_mean"]
+		summary["_all_motes_delays_std"] = data["_all_motes_delays_std"]
+		summary["all_motes_delays"] = data["all_motes_delays"]
 		summary["nodes"] = data["nodes"]
 		data_merge.append(summary)
 
