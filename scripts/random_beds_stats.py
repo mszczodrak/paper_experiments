@@ -26,6 +26,8 @@ nodes = {}
 starts = []
 sequences = {}
 
+offset = 999999999999999999999
+
 try:
 	testbed_conf = __import__(testbed_conf_module)
 except:
@@ -80,6 +82,9 @@ for line in f.readlines():
 		nodes[mote_id]['hist'].append( [timestamp, d1] )
 		nodes[mote_id]['last'] = d1
 
+		if timestamp < offset:
+			offset = timestamp
+
 
 	if dbg == DBGS_SEQUENCE_INCREASE:
 		var_id = "var_%s" % (d1)
@@ -93,8 +98,6 @@ for line in f.readlines():
 		sequences[var_id].append(entry)
 		
 
-exp_offset = 0
-
 # find start diff
 start_diff = -1
 if len(starts) == 2:
@@ -104,11 +107,9 @@ if len(starts) == 2:
 	if s1 > s2:
 		start_diff = s1 - s2
 		total_time = timestamp - s2
-		exp_offset = s2
 	else:
 		start_diff = s2 - s1
 		total_time = timestamp - s1
-		exp_offset = s1
 
 	v1 = starts[0]['num']
 	v2 = starts[1]['num']
@@ -126,7 +127,7 @@ motes_sync_delays = []
 for mote in nodes.keys():
 	n = nodes[mote]
 
-	mote_delay = n["hist"][-1][0] - exp_offset
+	mote_delay = n["hist"][-1][0] - offset
 	motes_sync_delays.append( mote_delay )
 
 	if n['last'] == v1:
