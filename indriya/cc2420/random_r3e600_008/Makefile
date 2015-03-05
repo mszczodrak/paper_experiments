@@ -1,0 +1,1 @@
+../../scripts/random_beds_Makefile
