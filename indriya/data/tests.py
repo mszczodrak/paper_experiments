@@ -443,3 +443,59 @@ def data_merge(root_dir, pwd, title):
 
 
 
+def data_random_beds(root_dir, pwd, title):
+	data_merge = []
+
+	for i in os.listdir(root_dir):
+		if not i.startswith("random_r"):
+			continue
+		full_path = "%s/%s" % (root_dir, i)
+
+		summary = {}
+		summary["NUMBER"] = "-1"
+		summary["test_name"] = i
+
+		for f in os.listdir(full_path):
+			if f.endswith(".zip"):
+				summary["NUMBER"] = int(f.split("-")[1].split(".")[0])
+				break
+
+		try:	
+			with open("%s/random_beds.json" % (full_path), "r") as fp:	
+				content = fp.read()
+				data = yaml.load(content)
+		except:
+			print "Error: missing %s\n" % ("%s/random_beds.json" % (full_path))
+			summary["_motes_lost"] = 0
+			summary["_motes_lost_percentage"] = 0
+			summary["_motes_with_v1"] = 0
+			summary["_motes_with_v1_percentage"] = 0
+			summary["_motes_with_v2"] = 0
+			summary["_motes_with_v2_percentage"] = 0
+			summary["_num_nodes"] = 0
+			summary["_start_diff"] = 0
+			summary["_sequences"] = {}
+			summary["_values"] = []
+			summary["nodes"] = {}
+			#data_merge.append(summary)
+			continue
+
+		summary["_motes_lost"] = data["_motes_lost"]
+		summary["_motes_lost_percentage"] = data["_motes_lost_percentage"]
+		summary["_motes_with_v1"] = data["_motes_with_v1"]
+		summary["_motes_with_v1_percentage"] = data["_motes_with_v1_percentage"]
+		summary["_motes_with_v2"] = data["_motes_with_v2"]
+		summary["_motes_with_v2_percentage"] = data["_motes_with_v2_percentage"]
+		summary["_num_nodes"] = data["_num_nodes"]
+		summary["_sequences"] = data["_sequences"]
+		summary["_values"] = data["_values"]
+		summary["_start_diff"] = data["_start_diff"]
+		summary["nodes"] = data["nodes"]
+		data_merge.append(summary)
+
+	with open(title, 'wb') as fp:
+		json.dump(data_merge, fp, sort_keys=True, indent=4)
+
+
+
+

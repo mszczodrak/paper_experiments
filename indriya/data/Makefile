@@ -12,7 +12,8 @@ all:
 	#python cc2420_eed_sync.py
 	#python cc2420_data_random.py
 	#python cc2420_data_from.py
-	python cc2420_data_merge.py
+	#python cc2420_data_merge.py
+	python cc2420_data_random_beds.py
 
 clean:
 	rm *.pyc
