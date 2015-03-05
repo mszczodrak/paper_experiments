@@ -1,1 +1,1 @@
-../../scripts/merge_Makefile
+../../scripts/random_beds_Makefile
