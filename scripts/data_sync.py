@@ -178,7 +178,12 @@ network_delays = sorted(network_delays)
 network_losts = sorted(network_losts)
 network_all_losts = sorted(network_all_losts)
 
+print "All losts:" ,
 print network_losts
+print "Network Update losts (during dissemination): ",
+print network_update_losts
+print "Number of all introduced values: ",
+print len(global_records)
 
 len_delay_75 = len(network_delays) * 75 / 100
 len_delay_95 = len(network_delays) * 95 / 100
@@ -191,7 +196,6 @@ len_lost_99 = len(network_losts) * 99 / 100
 len_all_losts_75 = len(network_all_losts) * 75 / 100
 len_all_losts_95 = len(network_all_losts) * 95 / 100
 len_all_losts_99 = len(network_all_losts) * 99 / 100
-
 
 summary = {}
 summary['all'] = nodes
